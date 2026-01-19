@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const UsersManagementPage = () => {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [editingUser, setEditingUser] = useState(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const data = await api.users.getAll();
-                setUsers(data);
+                // Sort users alphabetically by username
+                const sortedData = [...data].sort((a, b) => 
+                    a.username.localeCompare(b.username)
+                );
+                setUsers(sortedData);
             } catch (err) {
                 console.error("Failed to fetch users", err);
                 setError("You don't have permission to view this page or the server is unreachable.");
@@ -34,7 +39,7 @@ const UsersManagementPage = () => {
                 month: 'short',
                 year: 'numeric'
             }).format(date);
-        } catch (e) {
+        } catch {
             return dateString;
         }
     };
@@ -50,31 +55,8 @@ const UsersManagementPage = () => {
         }
     };
 
-    const handleEditUser = (user) => {
-        setEditingUser({ ...user });
-    };
-
-    const handleUpdateUser = async (e) => {
-        e.preventDefault();
-        try {
-            // Only send fields that should be updated
-            const updatedData = {
-                firstName: editingUser.firstName,
-                lastName: editingUser.lastName,
-                email: editingUser.email,
-                role: editingUser.role,
-                phone: editingUser.phone,
-                birthDate: editingUser.birthDate
-            };
-            
-            await api.users.update(editingUser.id, updatedData);
-            
-            // Update local state
-            setUsers(users.map(u => u.id === editingUser.id ? editingUser : u));
-            setEditingUser(null);
-        } catch (err) {
-            alert('Failed to update user: ' + err.message);
-        }
+    const handleEditUser = (id) => {
+        navigate(`/users-management/edit/${id}`);
     };
 
     if (loading) {
@@ -162,12 +144,14 @@ const UsersManagementPage = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                                         <button
-                                            onClick={() => handleEditUser(u)}
+                                            type="button"
+                                            onClick={() => handleEditUser(u.id)}
                                             className="text-indigo-500 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded-lg transition-all border border-indigo-100 font-bold"
                                         >
                                             Edit
                                         </button>
                                         <button
+                                            type="button"
                                             onClick={() => handleDeleteUser(u.id)}
                                             className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg transition-all border border-red-100 font-bold"
                                             disabled={u.username === 'admin'}
@@ -218,12 +202,14 @@ const UsersManagementPage = () => {
 
                         <div className="flex justify-end space-x-3 pt-3 border-t border-purple-50">
                             <button
-                                onClick={() => handleEditUser(u)}
+                                type="button"
+                                onClick={() => handleEditUser(u.id)}
                                 className="flex-1 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 py-2 rounded-lg font-bold text-sm transition-colors"
                             >
                                 Edit
                             </button>
                             <button
+                                type="button"
                                 onClick={() => handleDeleteUser(u.id)}
                                 className="flex-1 text-red-600 bg-red-50 hover:bg-red-100 py-2 rounded-lg font-bold text-sm transition-colors"
                                 disabled={u.username === 'admin'}
@@ -234,111 +220,6 @@ const UsersManagementPage = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Edit User Modal */}
-            {editingUser && (
-                <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={() => setEditingUser(null)}></div>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                            <form onSubmit={handleUpdateUser}>
-                                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                    <div className="sm:flex sm:items-start">
-                                        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                                Edit User: {editingUser.username}
-                                            </h3>
-                                            <div className="mt-4 space-y-4">
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                    <div>
-                                                        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
-                                                        <input
-                                                            type="text"
-                                                            name="firstName"
-                                                            id="firstName"
-                                                            value={editingUser.firstName || ''}
-                                                            onChange={(e) => setEditingUser({...editingUser, firstName: e.target.value})}
-                                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
-                                                        <input
-                                                            type="text"
-                                                            name="lastName"
-                                                            id="lastName"
-                                                            value={editingUser.lastName || ''}
-                                                            onChange={(e) => setEditingUser({...editingUser, lastName: e.target.value})}
-                                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                                                    <input
-                                                        type="email"
-                                                        name="email"
-                                                        id="email"
-                                                        value={editingUser.email || ''}
-                                                        onChange={(e) => setEditingUser({...editingUser, email: e.target.value})}
-                                                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                                                    />
-                                                </div>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                    <div>
-                                                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
-                                                        <input
-                                                            type="text"
-                                                            name="phone"
-                                                            id="phone"
-                                                            value={editingUser.phone || ''}
-                                                            onChange={(e) => setEditingUser({...editingUser, phone: e.target.value})}
-                                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700">Birthdate</label>
-                                                        <input
-                                                            type="date"
-                                                            name="birthDate"
-                                                            id="birthDate"
-                                                            value={editingUser.birthDate || ''}
-                                                            onChange={(e) => setEditingUser({...editingUser, birthDate: e.target.value})}
-                                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
-                                                    <select
-                                                        id="role"
-                                                        name="role"
-                                                        value={editingUser.role}
-                                                        onChange={(e) => setEditingUser({...editingUser, role: e.target.value})}
-                                                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
-                                                    >
-                                                        <option value="USER">USER</option>
-                                                        <option value="ADMIN">ADMIN</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-purple-600 text-base font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Save Changes
-                                    </button>
-                                    <button type="button" onClick={() => setEditingUser(null)} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

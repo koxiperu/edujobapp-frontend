@@ -134,12 +134,19 @@ const api = {
             });
             return handleResponse(response);
         },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
         update: async (id, data) => {
             const response = await fetch(`${API_URL}/users/${id}`, {
                 method: 'PUT',
                 headers: getHeaders(),
                 body: JSON.stringify(data),
             });
+            if (response.status === 204) return data; // Optimistic return or null
             return handleResponse(response);
         },
         delete: async (id) => {

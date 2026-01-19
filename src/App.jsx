@@ -13,6 +13,7 @@ import CreateApplicationPage from './pages/CreateApplicationPage';
 import CompaniesPage from './pages/CompaniesPage';
 import DocumentsPage from './pages/DocumentsPage';
 import UsersManagementPage from './pages/UsersManagementPage';
+import EditUserPage from './pages/EditUserPage';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           {/* Admin Routes */}
           <Route element={<ProtectedRoute adminOnly={true} />}>
             <Route path="/users-management" element={<UsersManagementPage />} />
+            <Route path="/users-management/edit/:id" element={<EditUserPage />} />
           </Route>
 
           {/* Fallback */}
