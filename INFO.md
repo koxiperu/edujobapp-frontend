@@ -91,3 +91,4 @@ The application communicates with a backend REST API.
 *   **Public Components**: Implemented Login, Register, Home pages and JobCard component.
 *   **Protected Pages**: Implemented Dashboard Page with summary stats and navigation links.
 *   **Applications Feature**: Implemented Applications List and Create Page with API integration.
+*   **Companies Feature**: Implemented Companies List and Create form with API integration.

@@ -74,7 +74,22 @@ const api = {
             return handleResponse(response);
         }
     },
-    companies: {},
+    companies: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/companies`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        create: async (data) => {
+            const response = await fetch(`${API_URL}/companies`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        }
+    },
     jobs: {}
 };
 
