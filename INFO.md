@@ -92,3 +92,4 @@ The application communicates with a backend REST API.
 *   **Protected Pages**: Implemented Dashboard Page with summary stats and navigation links.
 *   **Applications Feature**: Implemented Applications List and Create Page with API integration.
 *   **Companies Feature**: Implemented Companies List and Create form with API integration.
+*   **Documents Feature**: Implemented Documents List, Upload, and Download (Blob) with API integration.

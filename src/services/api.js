@@ -90,6 +90,36 @@ const api = {
             return handleResponse(response);
         }
     },
+    documents: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/documents`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        upload: async (formData) => {
+            const token = sessionStorage.getItem('edujobapp_token');
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            // Do NOT set Content-Type, let browser set boundary
+            
+            const response = await fetch(`${API_URL}/documents/upload`, {
+                method: 'POST',
+                headers: headers,
+                body: formData,
+            });
+            return handleResponse(response);
+        },
+        download: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}/download`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error("Download failed");
+            return response.blob();
+        }
+    },
     jobs: {}
 };
 
