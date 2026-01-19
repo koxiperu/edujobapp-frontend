@@ -120,7 +120,13 @@ const api = {
             return response.blob();
         }
     },
-    jobs: {}
+    jobs: {
+        getAll: async () => {
+            // Public endpoint, no authentication needed
+            const response = await fetch(`${API_URL}/public/jobs`);
+            return handleResponse(response);
+        }
+    }
 };
 
 export default api;
