@@ -65,11 +65,13 @@ src/
 The application communicates with a backend REST API.
 *   **Configuration:** Base URL is defined in environment variables (`VITE_API_URL` or proxy).
 *   **Service (`src/services/api.js`):**
-    *   `jobsAPI`: `getPublicJobs`.
+    *   `jobsAPI`: `getAll`.
     *   `authAPI`: `login`, `register`, `getMe`.
     *   `applicationsAPI`: `getAll`, `create`, `update`, `delete`.
     *   `companiesAPI`: `getAll`, `create`, `update`, `delete`.
     *   `documentsAPI`: `getAll`, `upload`, `download`.
+    *   `usersAPI`: `getAll`, `update`, `delete`.
+    *   `dashboardAPI`: `getStats`.
 *   **Headers:** Automatically attaches `Authorization: Bearer <token>` for authenticated requests.
 
 ## 6. Scripts
@@ -104,3 +106,92 @@ The application communicates with a backend REST API.
 *   Implement manage companies.
 *   Change password for user.
 * Color in red deadlines and notification on dashboard.
+
+## 10. API to fix
+The following endpoints are defined in the backend API but are currently unused/unimplemented in the frontend service (`src/services/api.js`):
+
+*   **Users**
+    *   `PUT /api/users/me` (Update current user profile)
+    *   `GET /api/users/{id}` (Get specific user - Admin)
+    *   `PUT /api/users/{id}` (Update specific user - Admin)
+
+*   **Applications**
+    *   `GET /api/applications/{id}` (Get single application details)
+    *   `PUT /api/applications/{id}` (Update application)
+    *   `DELETE /api/applications/{id}` (Delete application)
+
+*   **Companies**
+    *   `GET /api/companies/{id}` (Get single company details)
+    *   `PUT /api/companies/{id}` (Update company)
+    *   `DELETE /api/companies/{id}` (Delete company)
+    *   `GET /api/companies/{id}/applications` (Get applications for a company)
+
+*   **Documents**
+    *   `GET /api/documents/{id}` (Get document metadata)
+    *   `PUT /api/documents/{id}` (Update document metadata)
+    *   `DELETE /api/documents/{id}` (Delete document)
+    *   `GET /api/documents/{id}/applications` (Get applications linked to a document)
+
+
+# API structure of backend service
+**/api/auth** 
+   * /register: POST - Register a new user. 
+   * /login: POST - Authenticate and receive a token (JWT).
+
+**/api/public - for unauthenticated users**
+   * /jobs
+        GET - Get job advertisements from an external third-party API.
+
+**/api/users**
+   * /me
+        GET - Get the current user's profile.
+        PUT -  Update the current user's profile.
+   * /
+        GET - (ADMIN) Get a list of all users.
+   * /{id}
+        GET - (ADMIN) Get a specific user by ID.
+        PUT - (ADMIN) Update a user's information.
+        DELETE - (ADMIN) Delete a user.
+
+**/api/applications - for the logged-in user**
+   * /
+        GET - Get all applications .
+        POST - Create a new application.
+   * /{id}
+        GET - Get a single application by ID.
+        PUT - Update an application.
+        DELETE - Delete an application.
+
+**/api/companies - for the logged-in user**
+   * /
+        GET - Get all companies for the logged-in user.
+        POST - Create a new company.
+   * /{id}
+        GET - Get a single company by ID.
+        PUT - Update a company.
+        DELETE - Delete a company.
+   * /{id}/applications
+        GET - Get all applications for a specific company.
+
+**/api/documents - for the logged-in user**
+   * /
+        GET - Get all documents for the logged-in user.
+   * /upload
+        POST - Upload a new document.
+   * /{id}
+        GET - Get metadata for a single document.
+        PUT - Update a document's metadata.
+        DELETE - Delete a document.
+   * /{id}/download
+        GET -  Download a document.
+   * /{id}/applications
+        GET - Get all applications using a specific document.
+
+**/api/dashboard - of logged-in user**
+   GET - Get dashboard statistics and data for the logged-in user.
+   Response includes:
+   1.  Total count of documents and list of document file names.
+   2.  Total count of companies and list of company names.
+   3.  Total count of applications and list of all applications (full details) for frontend filtering.
+   4.  Applications breakdown by status and type.
+   Frontend will use this data to display critical applications (deadline < 1 week).

@@ -134,6 +134,14 @@ const api = {
             });
             return handleResponse(response);
         },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        },
         delete: async (id) => {
             const response = await fetch(`${API_URL}/users/${id}`, {
                 method: 'DELETE',
