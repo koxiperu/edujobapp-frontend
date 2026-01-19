@@ -94,3 +94,7 @@ The application communicates with a backend REST API.
 *   **Companies Feature**: Implemented Companies List and Create form with API integration.
 *   **Documents Feature**: Implemented Documents List, Upload, and Download (Blob) with API integration.
 *   **Routing**: Verified and configured `App.jsx` with Public and Protected routes using `Layout` and `AuthProvider`.
+
+## 9. TODO
+*   Implement manage companies.
+*   Change password for user.
