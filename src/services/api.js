@@ -44,7 +44,7 @@ const api = {
             return handleResponse(response);
         },
         getMe: async () => {
-            const response = await fetch(`${API_URL}/auth/me`, {
+            const response = await fetch(`${API_URL}/users/me`, {
                 headers: getHeaders(),
             });
             return handleResponse(response);
@@ -124,6 +124,22 @@ const api = {
         getAll: async () => {
             // Public endpoint, no authentication needed
             const response = await fetch(`${API_URL}/public/jobs`);
+            return handleResponse(response);
+        }
+    },
+    users: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/users`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
             return handleResponse(response);
         }
     }

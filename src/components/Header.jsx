@@ -24,7 +24,7 @@ const Header = () => {
     };
 
     // Helper to check admin status if hook doesn't provide it directly
-    const isUserAdmin = isAdmin || user?.role?.name === 'ADMIN';
+    const isUserAdmin = isAdmin || user?.role === 'ADMIN';
 
     return (
         <header className="bg-white shadow relative z-50">
@@ -134,7 +134,7 @@ const Header = () => {
                                     </span>
                                 </div>
                                 <Link
-                                    to="/admin/users"
+                                    to="/users-management"
                                     className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
                                     onClick={closeMenu}
                                 >
