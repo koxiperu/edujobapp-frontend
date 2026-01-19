@@ -58,9 +58,23 @@ const api = {
             return handleResponse(response);
         }
     },
-    companies: {}, 
-    documents: {},
-    applications: {},
+    applications: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        create: async (data) => {
+            const response = await fetch(`${API_URL}/applications`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        }
+    },
+    companies: {},
     jobs: {}
 };
 
