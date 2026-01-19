@@ -50,12 +50,76 @@ const api = {
             return handleResponse(response);
         }
     },
-    // Other endpoints can be added in 3.2
-    
-    // Placeholder for when we need them
-    companies: {}, 
-    documents: {},
-    applications: {},
+    dashboard: {
+        getStats: async () => {
+            const response = await fetch(`${API_URL}/dashboard`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        }
+    },
+    applications: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        create: async (data) => {
+            const response = await fetch(`${API_URL}/applications`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        }
+    },
+    companies: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/companies`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        create: async (data) => {
+            const response = await fetch(`${API_URL}/companies`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        }
+    },
+    documents: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/documents`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        upload: async (formData) => {
+            const token = sessionStorage.getItem('edujobapp_token');
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            // Do NOT set Content-Type, let browser set boundary
+            
+            const response = await fetch(`${API_URL}/documents/upload`, {
+                method: 'POST',
+                headers: headers,
+                body: formData,
+            });
+            return handleResponse(response);
+        },
+        download: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}/download`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error("Download failed");
+            return response.blob();
+        }
+    },
     jobs: {}
 };
 

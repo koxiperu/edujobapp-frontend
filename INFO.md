@@ -88,3 +88,13 @@ The application communicates with a backend REST API.
 *   **Assets**: Organized images into `src/assets/backgrounds`.
 *   **UI Components**: Implemented Header (w/ Auth logic), Footer, and Layout.
 *   **Core Logic**: Restored and implemented `api.js` service, `AuthContext`, and `useAuth` hook.
+*   **Public Components**: Implemented Login, Register, Home pages and JobCard component.
+*   **Protected Pages**: Implemented Dashboard Page with summary stats and navigation links.
+*   **Applications Feature**: Implemented Applications List and Create Page with API integration.
+*   **Companies Feature**: Implemented Companies List and Create form with API integration.
+*   **Documents Feature**: Implemented Documents List, Upload, and Download (Blob) with API integration.
+*   **Routing**: Verified and configured `App.jsx` with Public and Protected routes using `Layout` and `AuthProvider`.
+
+## 9. TODO
+*   Implement manage companies.
+*   Change password for user.
