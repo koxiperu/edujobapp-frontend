@@ -80,3 +80,11 @@ The application communicates with a backend REST API.
 ## 7. Styles
 *   Tailwind CSS is configured and imported in `src/index.css`.
 *   Responsive design principles are applied using Tailwind's utility classes.
+
+## 8. Steps of development
+*   **Project Initialization**: Set up React with Vite.
+*   **Styling**: Configured Tailwind CSS 4.
+*   **Structure**: Aligned folder structure with reference architecture.
+*   **Assets**: Organized images into `src/assets/backgrounds`.
+*   **UI Components**: Implemented Header (w/ Auth logic), Footer, and Layout.
+*   **Core Logic**: Restored and implemented `api.js` service, `AuthContext`, and `useAuth` hook.
