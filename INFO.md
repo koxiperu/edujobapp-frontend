@@ -88,3 +88,4 @@ The application communicates with a backend REST API.
 *   **Assets**: Organized images into `src/assets/backgrounds`.
 *   **UI Components**: Implemented Header (w/ Auth logic), Footer, and Layout.
 *   **Core Logic**: Restored and implemented `api.js` service, `AuthContext`, and `useAuth` hook.
+*   **Public Components**: Implemented Login, Register, Home pages and JobCard component.
