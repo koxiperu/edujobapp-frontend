@@ -38,8 +38,8 @@ const Header = () => {
                             className="h-12 w-auto mr-4"
                         />
                         <div className="flex flex-col">
-                            <span className="text-2xl font-bold text-indigo-600 leading-tight">EduJobApp</span>
-                            <span className="text-sm text-gray-500 font-medium">Build Your Future Today</span>
+                            <span className="text-2xl font-bold text-indigo-600 leading-tight">EduJob App Tracker</span>
+                            <span className="text-sm text-gray-500 font-medium">Manage your future</span>
                         </div>
                     </Link>
 
