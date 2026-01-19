@@ -89,50 +89,50 @@ const Header = () => {
             {isMenuOpen && user && (
                 <div className="absolute top-20 right-0 w-64 bg-white shadow-lg border-t border-gray-100 flex flex-col h-[calc(100vh-5rem)] overflow-y-auto">
                     <nav className="flex flex-col p-4 space-y-2">
-                        <Link
-                            to="/dashboard"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Dashboard
-                        </Link>
-                        <Link
-                            to="/applications"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Applications
-                        </Link>
-                        <Link
-                            to="/documents"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Documents
-                        </Link>
-                        <Link
-                            to="/companies"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Companies
-                        </Link>
-                        <Link
-                            to="/profile"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Profile
-                        </Link>
+                        {!isUserAdmin && (
+                            <>
+                                <Link
+                                    to="/dashboard"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Dashboard
+                                </Link>
+                                <Link
+                                    to="/applications"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Applications
+                                </Link>
+                                <Link
+                                    to="/documents"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Documents
+                                </Link>
+                                <Link
+                                    to="/companies"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Companies
+                                </Link>
+                                <Link
+                                    to="/profile"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Profile
+                                </Link>
+                            </>
+                        )}
 
                         {/* Admin Section */}
                         {isUserAdmin && (
                             <>
-                                <div className="border-t border-gray-200 my-2 pt-2">
-                                    <span className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                        Admin
-                                    </span>
-                                </div>
+                                <div className="border-t border-gray-200 my-2"></div>
                                 <Link
                                     to="/users-management"
                                     className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
