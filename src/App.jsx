@@ -14,6 +14,8 @@ import CompaniesPage from './pages/CompaniesPage';
 import DocumentsPage from './pages/DocumentsPage';
 import UsersManagementPage from './pages/UsersManagementPage';
 import EditUserPage from './pages/EditUserPage';
+import ProfilePage from './pages/ProfilePage';
+import EditProfilePage from './pages/EditProfilePage';
 
 function App() {
   return (
@@ -38,6 +40,10 @@ function App() {
 
             {/* Documents */}
             <Route path="/documents" element={<DocumentsPage />} />
+            
+            {/* Profile */}
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/edit" element={<EditProfilePage />} />
           </Route>
 
           {/* Admin Routes */}

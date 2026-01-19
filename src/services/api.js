@@ -140,6 +140,15 @@ const api = {
             });
             return handleResponse(response);
         },
+        updateMe: async (data) => {
+            const response = await fetch(`${API_URL}/users/me`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
         update: async (id, data) => {
             const response = await fetch(`${API_URL}/users/${id}`, {
                 method: 'PUT',

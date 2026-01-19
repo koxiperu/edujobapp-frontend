@@ -49,10 +49,10 @@ const Header = () => {
                             <>
                                 {/* Profile Info & Logout (Visible on Bar) */}
                                 <div className="flex items-center space-x-3 mr-2">
-                                    <div className="flex items-center text-gray-700">
+                                    <Link to="/profile" className="flex items-center text-gray-700 hover:text-indigo-600 transition-colors" title="View Profile">
                                         <FaUserCircle className="w-6 h-6 mr-2 text-indigo-600" />
                                         <span className="font-medium hidden sm:block">{user.firstName || user.username}</span>
-                                    </div>
+                                    </Link>
                                     <button
                                         onClick={handleLogout}
                                         className="text-gray-500 hover:text-red-600 transition-colors p-1 rounded-full hover:bg-gray-100"
