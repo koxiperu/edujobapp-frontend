@@ -50,9 +50,14 @@ const api = {
             return handleResponse(response);
         }
     },
-    // Other endpoints can be added in 3.2
-    
-    // Placeholder for when we need them
+    dashboard: {
+        getStats: async () => {
+            const response = await fetch(`${API_URL}/dashboard`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        }
+    },
     companies: {}, 
     documents: {},
     applications: {},
