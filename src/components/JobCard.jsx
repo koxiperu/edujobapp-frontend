@@ -9,7 +9,7 @@ const JobCard = ({ job }) => {
                     <p className="text-gray-600 font-medium">{job.company_name}</p>
                 </div>
                 <div className="flex flex-col items-end space-y-1">
-                    <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap">
+                    <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap">
                         {job.location}
                     </span>
                     {job.remote && (
@@ -53,7 +53,7 @@ const JobCard = ({ job }) => {
                 href={job.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200 mt-auto"
+                className="block w-full text-center bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 mt-auto"
             >
                 Apply Now
             </a>

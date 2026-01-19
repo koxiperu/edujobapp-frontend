@@ -103,3 +103,4 @@ The application communicates with a backend REST API.
 ## 9. TODO
 *   Implement manage companies.
 *   Change password for user.
+* Color in red deadlines and notification on dashboard.

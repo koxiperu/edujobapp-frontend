@@ -38,7 +38,7 @@ const Header = () => {
                             className="h-12 w-auto mr-4"
                         />
                         <div className="flex flex-col">
-                            <span className="text-2xl font-bold text-indigo-600 leading-tight">EduJob App Tracker</span>
+                            <span className="text-2xl font-bold text-violet-600 leading-tight">EduJob App Tracker</span>
                             <span className="text-sm text-gray-500 font-medium">Manage your future</span>
                         </div>
                     </Link>
@@ -73,10 +73,10 @@ const Header = () => {
                         ) : (
                             /* Unauthorized: Only Login & Register */
                             <div className="flex items-center space-x-4">
-                                <Link to="/login" className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
+                                <Link to="/login" className="text-gray-700 hover:text-violet-600 font-medium transition-colors">
                                     Login
                                 </Link>
-                                <Link to="/register" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 font-medium transition-colors shadow-sm">
+                                <Link to="/register" className="bg-violet-500 text-white px-4 py-2 rounded-md hover:bg-violet-600 font-medium transition-colors shadow-sm">
                                     Register
                                 </Link>
                             </div>
