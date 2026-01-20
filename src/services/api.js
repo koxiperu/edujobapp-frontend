@@ -126,6 +126,18 @@ const api = {
             });
             return handleResponse(response);
         },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getApplications: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
         upload: async (formData) => {
             const token = sessionStorage.getItem('edujobapp_token');
             const headers = {};
@@ -139,6 +151,23 @@ const api = {
                 headers: headers,
                 body: formData,
             });
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
             return handleResponse(response);
         },
         download: async (id) => {

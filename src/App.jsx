@@ -18,6 +18,8 @@ import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import CompanyDetailsPage from './pages/CompanyDetailsPage';
 import EditCompanyPage from './pages/EditCompanyPage';
+import DocumentDetailsPage from './pages/DocumentDetailsPage';
+import EditDocumentPage from './pages/EditDocumentPage';
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
 
             {/* Documents */}
             <Route path="/documents" element={<DocumentsPage />} />
+            <Route path="/documents/:id" element={<DocumentDetailsPage />} />
+            <Route path="/documents/:id/edit" element={<EditDocumentPage />} />
             
             {/* Profile */}
             <Route path="/profile" element={<ProfilePage />} />

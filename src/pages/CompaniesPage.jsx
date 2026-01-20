@@ -28,7 +28,7 @@ const CompaniesPage = () => {
             const data = await api.companies.getAll();
             setCompanies(data);
         } catch (error) {
-            console.error("Failed to load companies");
+            console.error("Failed to load companies", error);
         } finally {
             setLoading(false);
         }
@@ -117,51 +117,64 @@ const CompaniesPage = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {companies.map((company) => (
-                        <div key={company.id} className="bg-white p-6 rounded shadow hover:shadow-lg transition duration-200 flex flex-col justify-between">
-                            <div>
-                                <h3 className="text-xl font-bold text-gray-900 truncate">{company.name}</h3>
-                                <div className="flex items-center space-x-2 mb-2 mt-1">
-                                    <span className={`text-xs px-2 py-1 rounded bg-indigo-50 text-indigo-700 font-medium`}>{company.type}</span>
-                                    {company.country && (
-                                        <>
-                                            <span className="text-xs text-gray-300">•</span>
-                                            <span className="text-sm text-gray-500 truncate">{company.country}</span>
-                                        </>
+                            <div key={company.id} className="bg-white p-6 rounded shadow hover:shadow-lg transition duration-200 flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900 truncate">{company.name}</h3>
+                                    <div className="flex items-center space-x-2 mb-2 mt-1">
+                                        <span className={`text-xs px-2 py-1 rounded bg-indigo-50 text-indigo-700 font-medium`}>{company.type}</span>
+                                        {company.country && (
+                                            <>
+                                                <span className="text-xs text-gray-300">•</span>
+                                                <span className="text-sm text-gray-500 truncate">{company.country}</span>
+                                            </>
+                                        )}
+                                    </div>
+                                    {company.website && (
+                                        <a href={company.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 text-sm hover:underline block truncate mb-1">
+                                            {company.website}
+                                        </a>
+                                    )}
+                                    {company.email && (
+                                        <div className="text-xs text-gray-400 mt-2 truncate">
+                                            {company.email}
+                                        </div>
                                     )}
                                 </div>
-                                {company.website && (
-                                    <a href={company.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 text-sm hover:underline block truncate mb-1">
-                                        {company.website}
-                                    </a>
-                                )}
-                                {company.email && (
-                                    <div className="text-xs text-gray-400 mt-2 truncate">
-                                        {company.email}
+                                
+                                <div className="mt-6 pt-4 border-t border-gray-100">
+                                    <div className="flex justify-between space-x-2">
+                                        <button
+                                            onClick={() => navigate(`/companies/${company.id}`)}
+                                            className="flex-1 bg-indigo-50 text-indigo-700 px-3 py-2 rounded text-sm font-bold hover:bg-indigo-100 transition-colors"
+                                        >
+                                            View
+                                        </button>
+                                        <button
+                                            onClick={() => navigate(`/companies/${company.id}/edit`)}
+                                            className="flex-1 bg-gray-50 text-gray-700 px-3 py-2 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(company.id)}
+                                            disabled={company.applicationCount > 0}
+                                            className={`flex-1 px-3 py-2 rounded text-sm font-bold transition-colors border ${
+                                                company.applicationCount > 0 
+                                                ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' 
+                                                : 'bg-red-50 text-red-600 hover:bg-red-100 border-red-200'
+                                            }`}
+                                            title={company.applicationCount > 0 ? "Cannot delete company used in applications" : ""}
+                                        >
+                                            Delete
+                                        </button>
                                     </div>
-                                )}
+                                    {company.applicationCount > 0 && (
+                                        <p className="text-[10px] text-red-500 font-medium italic mt-2 text-center">
+                                            * Cannot delete: used in {company.applicationCount} application(s)
+                                        </p>
+                                    )}
+                                </div>
                             </div>
-                            
-                            <div className="mt-6 pt-4 border-t border-gray-100 flex justify-between space-x-2">
-                                <button
-                                    onClick={() => navigate(`/companies/${company.id}`)}
-                                    className="flex-1 bg-indigo-50 text-indigo-700 px-3 py-2 rounded text-sm font-bold hover:bg-indigo-100 transition-colors"
-                                >
-                                    View
-                                </button>
-                                <button
-                                    onClick={() => navigate(`/companies/${company.id}/edit`)}
-                                    className="flex-1 bg-gray-50 text-gray-700 px-3 py-2 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(company.id)}
-                                    className="flex-1 bg-red-50 text-red-600 px-3 py-2 rounded text-sm font-bold hover:bg-red-100 transition-colors"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
                     ))}
                     {companies.length === 0 && (
                         <div className="col-span-full text-center text-gray-500 py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">

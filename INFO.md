@@ -128,13 +128,13 @@ The following endpoints are defined in the backend API but are currently unused/
     *   `DELETE /api/applications/{id}` (Delete application)
 
 *   **Documents**
-    *   `GET /api/documents/{id}` (Get document metadata)
-    *   `PUT /api/documents/{id}` (Update document metadata)
-    *   `DELETE /api/documents/{id}` (Delete document)
-    *   `GET /api/documents/{id}/applications` (Get applications linked to a document)
+    *   `DELETE /api/documents/{id}` (Delete document - message to user that it's not possible to delete document as it used in the application)
+*   **Companies**
+    * `DELETE /api/companies/{id}` (Delete company - message to user that it's not possible to delete company as it used in the application)
 
+# Project Context: EduJobApp - Backend API structure
 
-# API structure of backend service
+## API structure of backend service
 **/api/auth** 
    * /register: POST - Register a new user. 
    * /login: POST - Authenticate and receive a token (JWT).
