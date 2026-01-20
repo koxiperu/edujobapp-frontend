@@ -119,10 +119,32 @@ The application communicates with a backend REST API.
 *   Change password for user.
 *   Color in red deadlines and notification on dashboard.
 
-## 10. API to fix
-The following endpoints are defined in the backend API but are currently unused/unimplemented in the frontend service (`src/services/api.js`):
-
-None. All listed endpoints have been implemented.
+## 10. Dashboard
+Response from backend:
+nDashboardResponse{
+     totalApplications    integer($int64)
+     totalDocuments    integer($int64)
+     totalCompanies    integer($int64)
+     applicationsByStatus    { < * >:    integer($int64)}
+     applicationsByType    { < * >:    integer($int64)}
+     allApplications    [ApplicationResponse{
+          id    [...]
+          title    [...]
+          description    [...]
+          applicationType    [...]
+          creationDate    [...]
+          submitDate    [...]
+          submitDeadline    [...]
+          responseDeadline    [...]
+          appStatus    [...]
+          resultNotes    [...]
+          userId    [...]
+          company    CompanyResponse{
+               name    [...]
+               country    [...]
+          }
+     }]
+  }
 
 # Project Context: EduJobApp - Backend API structure
 
