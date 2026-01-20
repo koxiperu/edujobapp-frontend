@@ -81,12 +81,41 @@ const api = {
             });
             return handleResponse(response);
         },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getApplications: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
         create: async (data) => {
             const response = await fetch(`${API_URL}/companies`, {
                 method: 'POST',
                 headers: getHeaders(),
                 body: JSON.stringify(data),
             });
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
             return handleResponse(response);
         }
     },

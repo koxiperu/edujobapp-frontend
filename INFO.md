@@ -37,8 +37,15 @@ src/
 │   ├── RegisterPage.jsx
 │   ├── DashboardPage.jsx     # User dashboard with stats
 │   ├── ApplicationsPage.jsx  # List and manage applications
-│   ├── CompaniesPage.jsx     # Manage companies
-│   └── DocumentsPage.jsx     # Manage documents
+│   ├── CreateApplicationPage.jsx # Form to create new application
+│   ├── CompaniesPage.jsx     # Manage companies list
+│   ├── CompanyDetailsPage.jsx # View single company and its applications
+│   ├── EditCompanyPage.jsx   # Form to edit company details
+│   ├── DocumentsPage.jsx     # Manage documents
+│   ├── UsersManagementPage.jsx # Admin user management list
+│   ├── EditUserPage.jsx      # Admin form to edit user details
+│   ├── ProfilePage.jsx       # Read-only user profile view
+│   └── EditProfilePage.jsx   # Form to edit own profile
 └── services/        # External service integration
     └── api.js             # API wrapper methods for Auth, Jobs, Applications, etc.
 ```
@@ -49,17 +56,19 @@ src/
 *   **Mechanism:** JWT-based authentication.
 *   **Storage:** Tokens and user info are stored in `sessionStorage` (`edujobapp_token`, `edujobapp_user`).
 *   **Roles:**
-    *   `USER`: Can manage own applications, companies, documents.
-    *   `ADMIN`: Can manage users.
-*   **Protection:** `ProtectedRoute` component guards routes like `/dashboard`, `/applications`, ensuring only authenticated users can access them.
+    *   `USER`: Can manage own applications, companies, documents, and profile.
+    *   `ADMIN`: Can manage users (CRUD) in addition to own data.
+*   **Protection:** `ProtectedRoute` component guards routes like `/dashboard`, `/applications`, `/users-management`, ensuring access control.
 
 ### Application Management
 *   **Public View:** The Home page fetches and displays public job advertisements (`/api/public/jobs`).
 *   **User Actions:**
     *   **Dashboard:** View statistics (Total Applications, etc.).
     *   **Applications:** CRUD operations for Job Applications.
-    *   **Companies:** Manage list of Companies.
+    *   **Companies:** Full CRUD for Companies (List, Create, View Details, Edit, Delete).
     *   **Documents:** Upload and manage Resumes/CVs.
+    *   **Profile:** View and update personal information (User profile).
+    *   **Admin:** Full user management (List, Edit, Delete).
 
 ## 5. API Integration
 The application communicates with a backend REST API.
@@ -68,9 +77,9 @@ The application communicates with a backend REST API.
     *   `jobsAPI`: `getAll`.
     *   `authAPI`: `login`, `register`, `getMe`.
     *   `applicationsAPI`: `getAll`, `create`, `update`, `delete`.
-    *   `companiesAPI`: `getAll`, `create`, `update`, `delete`.
+    *   `companiesAPI`: `getAll`, `getById`, `getApplications`, `create`, `update`, `delete`.
     *   `documentsAPI`: `getAll`, `upload`, `download`.
-    *   `usersAPI`: `getAll`, `update`, `delete`.
+    *   `usersAPI`: `getAll`, `getById`, `updateMe`, `update`, `delete`.
     *   `dashboardAPI`: `getStats`.
 *   **Headers:** Automatically attaches `Authorization: Bearer <token>` for authenticated requests.
 
@@ -93,38 +102,30 @@ The application communicates with a backend REST API.
 *   **Public Components**: Implemented Login, Register, Home pages and JobCard component.
 *   **Protected Pages**: Implemented Dashboard Page with summary stats and navigation links.
 *   **Applications Feature**: Implemented Applications List and Create Page with API integration.
-*   **Companies Feature**: Implemented Companies List and Create form with API integration.
+*   **Companies Feature**: Implemented Companies List, Details View, and Edit page. Fixed creation and update bugs by including `userId`.
 *   **Documents Feature**: Implemented Documents List, Upload, and Download (Blob) with API integration.
 *   **Routing**: Verified and configured `App.jsx` with Public and Protected routes using `Layout` and `AuthProvider`.
+*   **User Management (Admin)**: Implemented Users list, Delete functionality, and Edit User page (`EditUserPage`) with redirect.
+*   **Profile Management**: Implemented Profile view (`ProfilePage`) and Edit Profile form (`EditProfilePage`) for logged-in users.
 *   **Verification & Bug Fixes**:
-    *   **Fixed Missing Endpoint**: Added `api.jobs.getAll` to `src/services/api.js`.
-    *   **Fixed JobCard**: Hardened `JobCard.jsx` to gracefully handle missing `date_posted`/`description` and added `remote`/`job_types` badges.
-    *   **Header Refactor**: Implemented responsive Sidebar menu with Admin/User views.
-    *   **Final Verification**: Confirmed effective end-to-end data fetching with backend.
+    *   **Fixed Missing Endpoint**: Added missing endpoints for users and companies to `src/services/api.js`.
+    *   **User Management Fixes**: Solved modal z-index issues by refactoring to a dedicated Edit page. Added sorting by username.
+    *   **API Fixes**: Handled `204 No Content` responses for updates and deletes.
+    *   **Layout Fixes**: Optimized `CompanyDetailsPage` layout and Quick Actions visibility.
 
 ## 9. TODO
-*   Implement manage companies.
+*   Refactor pages folder (organise into subfolders).
+*   Add to the list of companies filter by country.
 *   Change password for user.
-* Color in red deadlines and notification on dashboard.
+*   Color in red deadlines and notification on dashboard.
 
 ## 10. API to fix
 The following endpoints are defined in the backend API but are currently unused/unimplemented in the frontend service (`src/services/api.js`):
-
-*   **Users**
-    *   `PUT /api/users/me` (Update current user profile)
-    *   `GET /api/users/{id}` (Get specific user - Admin)
-    *   `PUT /api/users/{id}` (Update specific user - Admin)
 
 *   **Applications**
     *   `GET /api/applications/{id}` (Get single application details)
     *   `PUT /api/applications/{id}` (Update application)
     *   `DELETE /api/applications/{id}` (Delete application)
-
-*   **Companies**
-    *   `GET /api/companies/{id}` (Get single company details)
-    *   `PUT /api/companies/{id}` (Update company)
-    *   `DELETE /api/companies/{id}` (Delete company)
-    *   `GET /api/companies/{id}/applications` (Get applications for a company)
 
 *   **Documents**
     *   `GET /api/documents/{id}` (Get document metadata)

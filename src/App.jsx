@@ -16,6 +16,8 @@ import UsersManagementPage from './pages/UsersManagementPage';
 import EditUserPage from './pages/EditUserPage';
 import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
+import CompanyDetailsPage from './pages/CompanyDetailsPage';
+import EditCompanyPage from './pages/EditCompanyPage';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
 
             {/* Companies */}
             <Route path="/companies" element={<CompaniesPage />} />
+            <Route path="/companies/:id" element={<CompanyDetailsPage />} />
+            <Route path="/companies/:id/edit" element={<EditCompanyPage />} />
 
             {/* Documents */}
             <Route path="/documents" element={<DocumentsPage />} />
