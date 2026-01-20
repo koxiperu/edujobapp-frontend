@@ -10,6 +10,8 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import CreateApplicationPage from './pages/CreateApplicationPage';
+import ApplicationDetailsPage from './pages/ApplicationDetailsPage';
+import EditApplicationPage from './pages/EditApplicationPage';
 import CompaniesPage from './pages/CompaniesPage';
 import DocumentsPage from './pages/DocumentsPage';
 import UsersManagementPage from './pages/UsersManagementPage';
@@ -38,6 +40,8 @@ function App() {
             {/* Applications */}
             <Route path="/applications" element={<ApplicationsPage />} />
             <Route path="/applications/new" element={<CreateApplicationPage />} />
+            <Route path="/applications/:id" element={<ApplicationDetailsPage />} />
+            <Route path="/applications/:id/edit" element={<EditApplicationPage />} />
 
             {/* Companies */}
             <Route path="/companies" element={<CompaniesPage />} />

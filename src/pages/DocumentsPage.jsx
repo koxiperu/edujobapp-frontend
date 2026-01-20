@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
 
 const DocumentsPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
@@ -12,7 +13,12 @@ const DocumentsPage = () => {
 
     useEffect(() => {
         fetchDocuments();
-    }, []);
+        
+        // Auto-open upload form if state is passed
+        if (location.state?.isCreating) {
+            setIsCreating(true);
+        }
+    }, [location.state]);
 
     const fetchDocuments = async () => {
         try {

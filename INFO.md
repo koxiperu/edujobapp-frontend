@@ -122,15 +122,7 @@ The application communicates with a backend REST API.
 ## 10. API to fix
 The following endpoints are defined in the backend API but are currently unused/unimplemented in the frontend service (`src/services/api.js`):
 
-*   **Applications**
-    *   `GET /api/applications/{id}` (Get single application details)
-    *   `PUT /api/applications/{id}` (Update application)
-    *   `DELETE /api/applications/{id}` (Delete application)
-
-*   **Documents**
-    *   `DELETE /api/documents/{id}` (Delete document - message to user that it's not possible to delete document as it used in the application)
-*   **Companies**
-    * `DELETE /api/companies/{id}` (Delete company - message to user that it's not possible to delete company as it used in the application)
+None. All listed endpoints have been implemented.
 
 # Project Context: EduJobApp - Backend API structure
 

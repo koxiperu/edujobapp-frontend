@@ -1,34 +1,31 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 
 const CreateApplicationPage = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [companies, setCompanies] = useState([]);
     const [loadingCompanies, setLoadingCompanies] = useState(true);
 
     // Initial form state
     const [formData, setFormData] = useState({
         title: '',
-        company_id: '',
-        application_type: 'JOB',
+        companyId: '',
+        applicationType: 'JOB',
         description: '',
-        submit_deadline: '',
-        response_deadline: '',
-        app_status: 'DRAFT',
+        submitDeadline: '',
+        responseDeadline: '',
+        appStatus: 'DRAFT',
     });
     const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                // Check if companies API is available, otherwise empty list
-                if (api.companies && api.companies.getAll) {
-                    const data = await api.companies.getAll();
-                    setCompanies(data);
-                } else {
-                    console.warn("Companies API not implemented yet");
-                }
+                const data = await api.companies.getAll();
+                setCompanies(data);
             } catch (err) {
                 console.error("Failed to load companies", err);
             } finally {
@@ -47,7 +44,8 @@ const CreateApplicationPage = () => {
         try {
             const payload = {
                 ...formData,
-                company_id: parseInt(formData.company_id),
+                companyId: parseInt(formData.companyId),
+                userId: user?.id
             };
 
             await api.applications.create(payload);
@@ -85,10 +83,10 @@ const CreateApplicationPage = () => {
                             <p className="text-sm text-gray-500">Loading companies...</p>
                         ) : (
                             <select
-                                name="company_id"
+                                name="companyId"
                                 required
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                                value={formData.company_id}
+                                value={formData.companyId}
                                 onChange={handleChange}
                             >
                                 <option value="">Select a Company</option>
@@ -103,9 +101,9 @@ const CreateApplicationPage = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Type</label>
                         <select
-                            name="application_type"
+                            name="applicationType"
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                            value={formData.application_type}
+                            value={formData.applicationType}
                             onChange={handleChange}
                         >
                             <option value="JOB">Job</option>
@@ -131,9 +129,9 @@ const CreateApplicationPage = () => {
                             <label className="block text-sm font-medium text-gray-700">Application Deadline</label>
                             <input
                                 type="date"
-                                name="submit_deadline"
+                                name="submitDeadline"
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                                value={formData.submit_deadline}
+                                value={formData.submitDeadline}
                                 onChange={handleChange}
                             />
                         </div>
@@ -141,9 +139,9 @@ const CreateApplicationPage = () => {
                             <label className="block text-sm font-medium text-gray-700">Expected Response</label>
                             <input
                                 type="date"
-                                name="response_deadline"
+                                name="responseDeadline"
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                                value={formData.response_deadline}
+                                value={formData.responseDeadline}
                                 onChange={handleChange}
                             />
                         </div>
