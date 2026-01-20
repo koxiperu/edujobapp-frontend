@@ -10,8 +10,18 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import CreateApplicationPage from './pages/CreateApplicationPage';
+import ApplicationDetailsPage from './pages/ApplicationDetailsPage';
+import EditApplicationPage from './pages/EditApplicationPage';
 import CompaniesPage from './pages/CompaniesPage';
 import DocumentsPage from './pages/DocumentsPage';
+import UsersManagementPage from './pages/UsersManagementPage';
+import EditUserPage from './pages/EditUserPage';
+import ProfilePage from './pages/ProfilePage';
+import EditProfilePage from './pages/EditProfilePage';
+import CompanyDetailsPage from './pages/CompanyDetailsPage';
+import EditCompanyPage from './pages/EditCompanyPage';
+import DocumentDetailsPage from './pages/DocumentDetailsPage';
+import EditDocumentPage from './pages/EditDocumentPage';
 
 function App() {
   return (
@@ -30,12 +40,28 @@ function App() {
             {/* Applications */}
             <Route path="/applications" element={<ApplicationsPage />} />
             <Route path="/applications/new" element={<CreateApplicationPage />} />
+            <Route path="/applications/:id" element={<ApplicationDetailsPage />} />
+            <Route path="/applications/:id/edit" element={<EditApplicationPage />} />
 
             {/* Companies */}
             <Route path="/companies" element={<CompaniesPage />} />
+            <Route path="/companies/:id" element={<CompanyDetailsPage />} />
+            <Route path="/companies/:id/edit" element={<EditCompanyPage />} />
 
             {/* Documents */}
             <Route path="/documents" element={<DocumentsPage />} />
+            <Route path="/documents/:id" element={<DocumentDetailsPage />} />
+            <Route path="/documents/:id/edit" element={<EditDocumentPage />} />
+            
+            {/* Profile */}
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/edit" element={<EditProfilePage />} />
+          </Route>
+
+          {/* Admin Routes */}
+          <Route element={<ProtectedRoute adminOnly={true} />}>
+            <Route path="/users-management" element={<UsersManagementPage />} />
+            <Route path="/users-management/edit/:id" element={<EditUserPage />} />
           </Route>
 
           {/* Fallback */}

@@ -24,7 +24,7 @@ const Header = () => {
     };
 
     // Helper to check admin status if hook doesn't provide it directly
-    const isUserAdmin = isAdmin || user?.role?.name === 'ADMIN';
+    const isUserAdmin = isAdmin || user?.role === 'ADMIN';
 
     return (
         <header className="bg-white shadow relative z-50">
@@ -38,8 +38,8 @@ const Header = () => {
                             className="h-12 w-auto mr-4"
                         />
                         <div className="flex flex-col">
-                            <span className="text-2xl font-bold text-indigo-600 leading-tight">EduJobApp</span>
-                            <span className="text-sm text-gray-500 font-medium">Build Your Future Today</span>
+                            <span className="text-2xl font-bold text-violet-600 leading-tight">EduJob App Tracker</span>
+                            <span className="text-sm text-gray-500 font-medium">Manage your future</span>
                         </div>
                     </Link>
 
@@ -49,10 +49,10 @@ const Header = () => {
                             <>
                                 {/* Profile Info & Logout (Visible on Bar) */}
                                 <div className="flex items-center space-x-3 mr-2">
-                                    <div className="flex items-center text-gray-700">
+                                    <Link to="/profile" className="flex items-center text-gray-700 hover:text-indigo-600 transition-colors" title="View Profile">
                                         <FaUserCircle className="w-6 h-6 mr-2 text-indigo-600" />
                                         <span className="font-medium hidden sm:block">{user.firstName || user.username}</span>
-                                    </div>
+                                    </Link>
                                     <button
                                         onClick={handleLogout}
                                         className="text-gray-500 hover:text-red-600 transition-colors p-1 rounded-full hover:bg-gray-100"
@@ -73,10 +73,10 @@ const Header = () => {
                         ) : (
                             /* Unauthorized: Only Login & Register */
                             <div className="flex items-center space-x-4">
-                                <Link to="/login" className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
+                                <Link to="/login" className="text-gray-700 hover:text-violet-600 font-medium transition-colors">
                                     Login
                                 </Link>
-                                <Link to="/register" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 font-medium transition-colors shadow-sm">
+                                <Link to="/register" className="bg-violet-500 text-white px-4 py-2 rounded-md hover:bg-violet-600 font-medium transition-colors shadow-sm">
                                     Register
                                 </Link>
                             </div>
@@ -89,52 +89,52 @@ const Header = () => {
             {isMenuOpen && user && (
                 <div className="absolute top-20 right-0 w-64 bg-white shadow-lg border-t border-gray-100 flex flex-col h-[calc(100vh-5rem)] overflow-y-auto">
                     <nav className="flex flex-col p-4 space-y-2">
-                        <Link
-                            to="/dashboard"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Dashboard
-                        </Link>
-                        <Link
-                            to="/applications"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Applications
-                        </Link>
-                        <Link
-                            to="/documents"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Documents
-                        </Link>
-                        <Link
-                            to="/companies"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Companies
-                        </Link>
-                        <Link
-                            to="/profile"
-                            className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
-                            onClick={closeMenu}
-                        >
-                            Profile
-                        </Link>
+                        {!isUserAdmin && (
+                            <>
+                                <Link
+                                    to="/dashboard"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Dashboard
+                                </Link>
+                                <Link
+                                    to="/applications"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Applications
+                                </Link>
+                                <Link
+                                    to="/documents"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Documents
+                                </Link>
+                                <Link
+                                    to="/companies"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Companies
+                                </Link>
+                                <Link
+                                    to="/profile"
+                                    className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
+                                    onClick={closeMenu}
+                                >
+                                    Profile
+                                </Link>
+                            </>
+                        )}
 
                         {/* Admin Section */}
                         {isUserAdmin && (
                             <>
-                                <div className="border-t border-gray-200 my-2 pt-2">
-                                    <span className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                        Admin
-                                    </span>
-                                </div>
+                                <div className="border-t border-gray-200 my-2"></div>
                                 <Link
-                                    to="/admin/users"
+                                    to="/users-management"
                                     className="px-4 py-3 rounded-md text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium"
                                     onClick={closeMenu}
                                 >

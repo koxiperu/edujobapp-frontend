@@ -44,7 +44,7 @@ const api = {
             return handleResponse(response);
         },
         getMe: async () => {
-            const response = await fetch(`${API_URL}/auth/me`, {
+            const response = await fetch(`${API_URL}/users/me`, {
                 headers: getHeaders(),
             });
             return handleResponse(response);
@@ -65,6 +65,12 @@ const api = {
             });
             return handleResponse(response);
         },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/applications/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
         create: async (data) => {
             const response = await fetch(`${API_URL}/applications`, {
                 method: 'POST',
@@ -72,11 +78,40 @@ const api = {
                 body: JSON.stringify(data),
             });
             return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/applications/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/applications/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
         }
     },
     companies: {
         getAll: async () => {
             const response = await fetch(`${API_URL}/companies`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getApplications: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}/applications`, {
                 headers: getHeaders(),
             });
             return handleResponse(response);
@@ -88,11 +123,40 @@ const api = {
                 body: JSON.stringify(data),
             });
             return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
         }
     },
     documents: {
         getAll: async () => {
             const response = await fetch(`${API_URL}/documents`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getApplications: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}/applications`, {
                 headers: getHeaders(),
             });
             return handleResponse(response);
@@ -112,6 +176,23 @@ const api = {
             });
             return handleResponse(response);
         },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
+        },
         download: async (id) => {
             const response = await fetch(`${API_URL}/documents/${id}/download`, {
                 headers: getHeaders(),
@@ -120,7 +201,53 @@ const api = {
             return response.blob();
         }
     },
-    jobs: {}
+    jobs: {
+        getAll: async () => {
+            // Public endpoint, no authentication needed
+            const response = await fetch(`${API_URL}/public/jobs`);
+            return handleResponse(response);
+        }
+    },
+    users: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/users`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        updateMe: async (data) => {
+            const response = await fetch(`${API_URL}/users/me`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data; // Optimistic return or null
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
+        }
+    }
 };
 
 export default api;

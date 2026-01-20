@@ -37,8 +37,15 @@ src/
 │   ├── RegisterPage.jsx
 │   ├── DashboardPage.jsx     # User dashboard with stats
 │   ├── ApplicationsPage.jsx  # List and manage applications
-│   ├── CompaniesPage.jsx     # Manage companies
-│   └── DocumentsPage.jsx     # Manage documents
+│   ├── CreateApplicationPage.jsx # Form to create new application
+│   ├── CompaniesPage.jsx     # Manage companies list
+│   ├── CompanyDetailsPage.jsx # View single company and its applications
+│   ├── EditCompanyPage.jsx   # Form to edit company details
+│   ├── DocumentsPage.jsx     # Manage documents
+│   ├── UsersManagementPage.jsx # Admin user management list
+│   ├── EditUserPage.jsx      # Admin form to edit user details
+│   ├── ProfilePage.jsx       # Read-only user profile view
+│   └── EditProfilePage.jsx   # Form to edit own profile
 └── services/        # External service integration
     └── api.js             # API wrapper methods for Auth, Jobs, Applications, etc.
 ```
@@ -49,27 +56,31 @@ src/
 *   **Mechanism:** JWT-based authentication.
 *   **Storage:** Tokens and user info are stored in `sessionStorage` (`edujobapp_token`, `edujobapp_user`).
 *   **Roles:**
-    *   `USER`: Can manage own applications, companies, documents.
-    *   `ADMIN`: Can manage users.
-*   **Protection:** `ProtectedRoute` component guards routes like `/dashboard`, `/applications`, ensuring only authenticated users can access them.
+    *   `USER`: Can manage own applications, companies, documents, and profile.
+    *   `ADMIN`: Can manage users (CRUD) in addition to own data.
+*   **Protection:** `ProtectedRoute` component guards routes like `/dashboard`, `/applications`, `/users-management`, ensuring access control.
 
 ### Application Management
 *   **Public View:** The Home page fetches and displays public job advertisements (`/api/public/jobs`).
 *   **User Actions:**
     *   **Dashboard:** View statistics (Total Applications, etc.).
     *   **Applications:** CRUD operations for Job Applications.
-    *   **Companies:** Manage list of Companies.
+    *   **Companies:** Full CRUD for Companies (List, Create, View Details, Edit, Delete).
     *   **Documents:** Upload and manage Resumes/CVs.
+    *   **Profile:** View and update personal information (User profile).
+    *   **Admin:** Full user management (List, Edit, Delete).
 
 ## 5. API Integration
 The application communicates with a backend REST API.
 *   **Configuration:** Base URL is defined in environment variables (`VITE_API_URL` or proxy).
 *   **Service (`src/services/api.js`):**
-    *   `jobsAPI`: `getPublicJobs`.
+    *   `jobsAPI`: `getAll`.
     *   `authAPI`: `login`, `register`, `getMe`.
     *   `applicationsAPI`: `getAll`, `create`, `update`, `delete`.
-    *   `companiesAPI`: `getAll`, `create`, `update`, `delete`.
+    *   `companiesAPI`: `getAll`, `getById`, `getApplications`, `create`, `update`, `delete`.
     *   `documentsAPI`: `getAll`, `upload`, `download`.
+    *   `usersAPI`: `getAll`, `getById`, `updateMe`, `update`, `delete`.
+    *   `dashboardAPI`: `getStats`.
 *   **Headers:** Automatically attaches `Authorization: Bearer <token>` for authenticated requests.
 
 ## 6. Scripts
@@ -91,10 +102,111 @@ The application communicates with a backend REST API.
 *   **Public Components**: Implemented Login, Register, Home pages and JobCard component.
 *   **Protected Pages**: Implemented Dashboard Page with summary stats and navigation links.
 *   **Applications Feature**: Implemented Applications List and Create Page with API integration.
-*   **Companies Feature**: Implemented Companies List and Create form with API integration.
+*   **Companies Feature**: Implemented Companies List, Details View, and Edit page. Fixed creation and update bugs by including `userId`.
 *   **Documents Feature**: Implemented Documents List, Upload, and Download (Blob) with API integration.
 *   **Routing**: Verified and configured `App.jsx` with Public and Protected routes using `Layout` and `AuthProvider`.
+*   **User Management (Admin)**: Implemented Users list, Delete functionality, and Edit User page (`EditUserPage`) with redirect.
+*   **Profile Management**: Implemented Profile view (`ProfilePage`) and Edit Profile form (`EditProfilePage`) for logged-in users.
+*   **Verification & Bug Fixes**:
+    *   **Fixed Missing Endpoint**: Added missing endpoints for users and companies to `src/services/api.js`.
+    *   **User Management Fixes**: Solved modal z-index issues by refactoring to a dedicated Edit page. Added sorting by username.
+    *   **API Fixes**: Handled `204 No Content` responses for updates and deletes.
+    *   **Layout Fixes**: Optimized `CompanyDetailsPage` layout and Quick Actions visibility.
 
 ## 9. TODO
-*   Implement manage companies.
+*   Refactor pages folder (organise into subfolders).
+*   Add to the list of companies filter by country.
 *   Change password for user.
+*   Color in red deadlines and notification on dashboard.
+
+## 10. Dashboard
+Response from backend:
+nDashboardResponse{
+     totalApplications    integer($int64)
+     totalDocuments    integer($int64)
+     totalCompanies    integer($int64)
+     applicationsByStatus    { < * >:    integer($int64)}
+     applicationsByType    { < * >:    integer($int64)}
+     allApplications    [ApplicationResponse{
+          id    [...]
+          title    [...]
+          description    [...]
+          applicationType    [...]
+          creationDate    [...]
+          submitDate    [...]
+          submitDeadline    [...]
+          responseDeadline    [...]
+          appStatus    [...]
+          resultNotes    [...]
+          userId    [...]
+          company    CompanyResponse{
+               name    [...]
+               country    [...]
+          }
+     }]
+  }
+
+# Project Context: EduJobApp - Backend API structure
+
+## API structure of backend service
+**/api/auth** 
+   * /register: POST - Register a new user. 
+   * /login: POST - Authenticate and receive a token (JWT).
+
+**/api/public - for unauthenticated users**
+   * /jobs
+        GET - Get job advertisements from an external third-party API.
+
+**/api/users**
+   * /me
+        GET - Get the current user's profile.
+        PUT -  Update the current user's profile.
+   * /
+        GET - (ADMIN) Get a list of all users.
+   * /{id}
+        GET - (ADMIN) Get a specific user by ID.
+        PUT - (ADMIN) Update a user's information.
+        DELETE - (ADMIN) Delete a user.
+
+**/api/applications - for the logged-in user**
+   * /
+        GET - Get all applications .
+        POST - Create a new application.
+   * /{id}
+        GET - Get a single application by ID.
+        PUT - Update an application.
+        DELETE - Delete an application.
+
+**/api/companies - for the logged-in user**
+   * /
+        GET - Get all companies for the logged-in user.
+        POST - Create a new company.
+   * /{id}
+        GET - Get a single company by ID.
+        PUT - Update a company.
+        DELETE - Delete a company.
+   * /{id}/applications
+        GET - Get all applications for a specific company.
+
+**/api/documents - for the logged-in user**
+   * /
+        GET - Get all documents for the logged-in user.
+   * /upload
+        POST - Upload a new document.
+   * /{id}
+        GET - Get metadata for a single document.
+        PUT - Update a document's metadata.
+        DELETE - Delete a document.
+   * /{id}/download
+        GET -  Download a document.
+   * /{id}/applications
+        GET - Get all applications using a specific document.
+
+**/api/dashboard - of logged-in user**
+   GET - Get dashboard statistics and data for the logged-in user.
+   Response includes:
+   1.  Total count of documents and list of document file names.
+   2.  Total count of companies and list of company names.
+   3.  Total count of applications and list of all applications (full details) for frontend filtering.
+   4.  Applications breakdown by status and type.
+   Frontend will use this data to display critical applications (deadline < 1 week).
