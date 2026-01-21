@@ -44,7 +44,7 @@ const DashboardPage = () => {
     const getTypeColor = (name) => {
         const n = name.toUpperCase();
         if (n.includes('JOB') || n.includes('EMPLOYER')) return '#646cff';
-        if (n.includes('COURSE')) return '#8b5cf6';
+        if (n.includes('COURSE')) return '#91486c';
         if (n.includes('UNIVERSITY')) return '#1a8377';
         if (n.includes('LYCEE')) return '#ca8a04';
         return '#6b7280';
@@ -65,7 +65,7 @@ const DashboardPage = () => {
 
         return [
             { name: 'Accepted', value: accepted, color: '#1a8377' },
-            { name: 'Rejected', value: rejected, color: '#90636b' },
+            { name: 'Rejected', value: rejected, color: '#991b1b' },
             { name: 'Unknown', value: others, color: '#6b7280' }
         ];
     }, [data]);
