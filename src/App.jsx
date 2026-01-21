@@ -8,20 +8,28 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
-import ApplicationsPage from './pages/ApplicationsPage';
-import CreateApplicationPage from './pages/CreateApplicationPage';
-import ApplicationDetailsPage from './pages/ApplicationDetailsPage';
-import EditApplicationPage from './pages/EditApplicationPage';
-import CompaniesPage from './pages/CompaniesPage';
-import DocumentsPage from './pages/DocumentsPage';
-import UsersManagementPage from './pages/UsersManagementPage';
-import EditUserPage from './pages/EditUserPage';
-import ProfilePage from './pages/ProfilePage';
-import EditProfilePage from './pages/EditProfilePage';
-import CompanyDetailsPage from './pages/CompanyDetailsPage';
-import EditCompanyPage from './pages/EditCompanyPage';
-import DocumentDetailsPage from './pages/DocumentDetailsPage';
-import EditDocumentPage from './pages/EditDocumentPage';
+
+// Application Pages
+import ApplicationsPage from './pages/applications/ApplicationsPage';
+import CreateApplicationPage from './pages/applications/CreateApplicationPage';
+import ApplicationDetailsPage from './pages/applications/ApplicationDetailsPage';
+import EditApplicationPage from './pages/applications/EditApplicationPage';
+
+// Company Pages
+import CompaniesPage from './pages/companies/CompaniesPage';
+import CompanyDetailsPage from './pages/companies/CompanyDetailsPage';
+import EditCompanyPage from './pages/companies/EditCompanyPage';
+
+// Document Pages
+import DocumentsPage from './pages/documents/DocumentsPage';
+import DocumentDetailsPage from './pages/documents/DocumentDetailsPage';
+import EditDocumentPage from './pages/documents/EditDocumentPage';
+
+// User Pages
+import UsersManagementPage from './pages/users/UsersManagementPage';
+import EditUserPage from './pages/users/EditUserPage';
+import ProfilePage from './pages/users/ProfilePage';
+import EditProfilePage from './pages/users/EditProfilePage';
 
 function App() {
   return (
