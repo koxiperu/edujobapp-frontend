@@ -154,8 +154,8 @@ const DashboardPage = () => {
     return (
         <div id="list" className="min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <div className="mb-10">
-                    <h1 className="text-4xl font-extrabold text-purple-900 drop-shadow-sm">Dashboard Overview</h1>
+                <div className="mb-10 text-center flex flex-col items-center">
+                    <h1 className="text-4xl text-center font-extrabold text-purple-900 drop-shadow-sm">Dashboard</h1>
                     <div className="w-20 h-1 bg-gradient-to-r from-purple-900 to-pink-400 rounded-full mt-2"></div>
                 </div>
 
@@ -170,261 +170,248 @@ const DashboardPage = () => {
                     {/* Soft pastel overlay */}
                     <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
 
-                    <div className="relative z-10 w-full space-y-6">
+                    <div className="relative z-10 w-full">
                         
-                        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             
-                            {/* LEFT COLUMN: Critical Attention Needed (80%) */}
-                            <div className="lg:col-span-4 space-y-6">
-                                <h2 className="text-2xl font-bold text-purple-900 flex items-center italic">
-                                    <span className="mr-3">⚠️</span> Critical Attention Needed
-                                </h2>
-
-                                <div className="grid grid-cols-1 gap-6">
-                                    {/* Drafts expiring soon */}
-                                    <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-none overflow-hidden border border-[#90636b]">
-                                        <div className="bg-[#90636b]/10 px-6 py-3 border-b border-[#90636b]">
-                                            <h3 className="text-[#90636b] font-bold flex items-center text-sm uppercase tracking-wider">
-                                                Drafts expiring soon (Submission &lt; 7 days)
-                                            </h3>
-                                        </div>
-                                        <div className="overflow-x-auto">
-                                            <table className="min-w-full divide-y divide-[#90636b]">
-                                                <thead className="bg-[#90636b]/30">
-                                                    <tr>
-                                                        <th className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Title</th>
-                                                        <th className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Company</th>
-                                                        <th className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Deadline</th>
-                                                        <th className="px-6 py-4"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="bg-transparent divide-y divide-[#90636b]">
-                                                    {criticalDrafts.map(app => (
-                                                        <tr key={app.id} className="hover:bg-[#f5c6cf]/10 transition-colors">
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#312e81]">{app.title}</td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-900 font-medium">{app.company?.name}</td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#854d0e] italic">
-                                                                {new Date(app.submitDeadline).toLocaleDateString()}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                                <button onClick={() => navigate(`/applications/${app.id}/edit`)} className="text-[#646cff] font-bold hover:underline">Complete Now</button>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                    {criticalDrafts.length === 0 && (
-                                                        <tr>
-                                                            <td colSpan="4" className="px-6 py-8 text-center text-gray-500 italic">No urgent drafts.</td>
-                                                        </tr>
-                                                    )}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    {/* Responses expected */}
-                                    <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-none overflow-hidden border border-[#90636b]">
-                                        <div className="bg-[#90636b]/10 px-6 py-3 border-b border-[#90636b]">
-                                            <h3 className="text-[#90636b] font-bold text-sm uppercase tracking-wider">Responses due today or already passed</h3>
-                                        </div>
-                                        <div className="overflow-x-auto">
-                                            <table className="min-w-full divide-y divide-[#90636b]">
-                                                <thead className="bg-[#90636b]/30">
-                                                    <tr>
-                                                        <th className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Title</th>
-                                                        <th className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Company</th>
-                                                        <th className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Deadline</th>
-                                                        <th className="px-6 py-4"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="bg-transparent divide-y divide-[#90636b]">
-                                                    {criticalPending.map(app => (
-                                                        <tr key={app.id} className="hover:bg-[#f5c6cf]/10 transition-colors">
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#312e81]">{app.title}</td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-900 font-medium">{app.company?.name}</td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#ca8a04]">
-                                                                {new Date(app.responseDeadline).toLocaleDateString()}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                                <button onClick={() => navigate(`/applications/${app.id}`)} className="text-[#646cff] font-bold hover:underline">View Details</button>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                    {criticalPending.length === 0 && (
-                                                        <tr>
-                                                            <td colSpan="4" className="px-6 py-8 text-center text-gray-500 italic">No imminent expected responses.</td>
-                                                        </tr>
-                                                    )}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* RIGHT COLUMN: 4 Overview Boxes (20%) */}
-                            <div className="lg:col-span-1 flex flex-col gap-4">
-                                {/* 1.1.0: Quick Totals */}
-                                <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center aspect-square overflow-hidden hover:shadow-lg transition duration-200">
-                                    <h2 className="text-xs sm:text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Summary</h2>
-                                    <div className="space-y-2 w-full px-2">
-                                        <div className="flex items-center justify-between py-1 border-b border-[#f5c6cf]/30">
-                                            <span className="text-[#90636b] font-bold text-[10px] uppercase truncate mr-2">Applications</span>
-                                            <span className="text-lg font-black text-[#90636b]">{data.allApplications?.length || 0}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between py-1 border-b border-[#f5c6cf]/30">
-                                            <span className="text-[#423292] font-bold text-[10px] uppercase truncate mr-2">Documents</span>
-                                            <span className="text-lg font-black text-[#423292]">{counts.documents}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between py-1">
-                                            <span className="text-[#1a8377] font-bold text-[10px] uppercase truncate mr-2">Companies</span>
-                                            <span className="text-lg font-black text-[#1a8377]">{counts.companies}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* 1.1.a: Application Types */}
-                                <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center aspect-square overflow-hidden hover:shadow-lg transition duration-200">
-                                    <h2 className="text-xs sm:text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Types</h2>
-                                    <div className="flex-grow w-full min-h-0">
+                            {/* LEFT COLUMN (2/3): Timeline + 4 Charts */}
+                            <div className="lg:col-span-2 space-y-6">
+                                
+                                {/* 1. Timeline Chart (Top Left) */}
+                                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-md shadow-md border border-[#f5c6cf]">
+                                    <h2 className="text-xl font-bold text-purple-900 mb-4 italic">Applications Creation Timeline</h2>
+                                    <div className="h-64 w-full">
                                         <ResponsiveContainer width="100%" height="100%">
-                                            <PieChart>
-                                                <Pie
-                                                    data={typeData}
-                                                    innerRadius="50%"
-                                                    outerRadius="80%"
-                                                    paddingAngle={5}
-                                                    dataKey="value"
-                                                >
-                                                    {typeData.map((entry, index) => (
-                                                        <Cell key={`cell-${index}`} fill={getTypeColor(entry.name)} />
-                                                    ))}
-                                                </Pie>
-                                                <Tooltip contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf' }} />
-                                                <Legend wrapperStyle={{ fontSize: '10px' }} />
-                                            </PieChart>
-                                        </ResponsiveContainer>
-                                    </div>
-                                </div>
-
-                                {/* 1.1.b: Application Statuses */}
-                                <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center aspect-square overflow-hidden hover:shadow-lg transition duration-200">
-                                    <h2 className="text-xs sm:text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Success</h2>
-                                    <div className="flex-grow w-full min-h-0">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <PieChart>
-                                                <Pie
-                                                    data={statusData}
-                                                    innerRadius="50%"
-                                                    outerRadius="80%"
-                                                    paddingAngle={5}
-                                                    dataKey="value"
-                                                >
-                                                    {statusData.map((entry, index) => (
-                                                        <Cell key={`cell-${index}`} fill={entry.color} />
-                                                    ))}
-                                                </Pie>
-                                                <Tooltip contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf' }} />
-                                                <Legend wrapperStyle={{ fontSize: '10px' }} />
-                                            </PieChart>
-                                        </ResponsiveContainer>
-                                    </div>
-                                </div>
-
-                                {/* 1.1.c: Country Distribution */}
-                                <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center aspect-square overflow-hidden hover:shadow-lg transition duration-200">
-                                    <h2 className="text-xs sm:text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Countries</h2>
-                                    <div className="flex-grow w-full min-h-0">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <BarChart
-                                                layout="vertical"
-                                                data={countryPyramidData}
-                                                margin={{ left: 0, right: 0, bottom: 0 }}
-                                                stackOffset="sign"
-                                                barSize={12}
-                                            >
-                                                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
-                                                <XAxis type="number" hide />
-                                                <YAxis dataKey="code" type="category" hide />
+                                            <AreaChart data={timelineData}>
+                                                <defs>
+                                                    <linearGradient id="colorJob" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="#646cff" stopOpacity={0.8}/>
+                                                        <stop offset="95%" stopColor="#646cff" stopOpacity={0}/>
+                                                    </linearGradient>
+                                                    <linearGradient id="colorEdu" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="#854d0e" stopOpacity={0.8}/>
+                                                        <stop offset="95%" stopColor="#854d0e" stopOpacity={0}/>
+                                                    </linearGradient>
+                                                </defs>
+                                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                                <XAxis
+                                                    dataKey="date"
+                                                    tick={{ fill: '#6b7280', fontSize: 11 }}
+                                                    axisLine={{ stroke: '#e5e7eb' }}
+                                                />
+                                                <YAxis
+                                                    tick={{ fill: '#6b7280', fontSize: 11 }}
+                                                    axisLine={false}
+                                                    tickLine={false}
+                                                />
                                                 <Tooltip
-                                                    cursor={{ fill: '#f9fafb' }}
-                                                    contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf' }}
-                                                    formatter={(value, name) => [Math.abs(value), name]}
+                                                    contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
                                                 />
-                                                <Legend
-                                                    verticalAlign="top"
-                                                    height={24}
-                                                    wrapperStyle={{ fontSize: '10px' }}
-                                                    payload={[
-                                                        { value: 'Edu', type: 'rect', color: '#854d0e' },
-                                                        { value: 'Jobs', type: 'rect', color: '#646cff' }
-                                                    ]}
+                                                <Area 
+                                                    type="monotone" 
+                                                    dataKey="job" 
+                                                    name="Jobs"
+                                                    stroke="#646cff" 
+                                                    fillOpacity={1} 
+                                                    fill="url(#colorJob)" 
                                                 />
-                                                <Bar dataKey="eduVal" name="Education" fill="#854d0e" stackId="stack" radius={[2, 0, 0, 2]} />
-                                                <Bar dataKey="gapPos" stackId="stack" fill="transparent" isAnimationActive={false}>
-                                                    <LabelList
-                                                        dataKey="code"
-                                                        position="center"
-                                                        style={{ fill: '#4b5563', fontSize: 10, fontWeight: 'bold' }}
-                                                    />
-                                                </Bar>
-                                                <Bar dataKey="gapPos" stackId="stack" fill="transparent" isAnimationActive={false} />
-                                                <Bar dataKey="jobVal" name="Jobs" fill="#646cff" stackId="stack" radius={[0, 2, 2, 0]} />
-                                            </BarChart>
+                                                <Area 
+                                                    type="monotone" 
+                                                    dataKey="edu" 
+                                                    name="Education"
+                                                    stroke="#854d0e" 
+                                                    fillOpacity={1} 
+                                                    fill="url(#colorEdu)" 
+                                                />
+                                                <Legend />
+                                            </AreaChart>
                                         </ResponsiveContainer>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        {/* LAYER 3: Timeline Chart */}
-                        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-md shadow-md border border-[#f5c6cf]">
-                            <h2 className="text-xl font-bold text-purple-900 mb-6 italic">Applications Creation Timeline</h2>
-                            <div className="h-80 w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={timelineData}>
-                                        <defs>
-                                            <linearGradient id="colorJob" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#646cff" stopOpacity={0.8}/>
-                                                <stop offset="95%" stopColor="#646cff" stopOpacity={0}/>
-                                            </linearGradient>
-                                            <linearGradient id="colorEdu" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#854d0e" stopOpacity={0.8}/>
-                                                <stop offset="95%" stopColor="#854d0e" stopOpacity={0}/>
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                                        <XAxis
-                                            dataKey="date"
-                                            tick={{ fill: '#6b7280', fontSize: 11 }}
-                                            axisLine={{ stroke: '#e5e7eb' }}
-                                        />
-                                        <YAxis
-                                            tick={{ fill: '#6b7280', fontSize: 11 }}
-                                            axisLine={false}
-                                            tickLine={false}
-                                        />
-                                        <Tooltip
-                                            contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                                        />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="job" 
-                                            name="Jobs"
-                                            stroke="#646cff" 
-                                            fillOpacity={1} 
-                                            fill="url(#colorJob)" 
-                                        />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="edu" 
-                                            name="Education"
-                                            stroke="#854d0e" 
-                                            fillOpacity={1} 
-                                            fill="url(#colorEdu)" 
-                                        />
-                                        <Legend />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                                {/* 2. 4 Overview Boxes (Bottom Left - 2x2 Grid) */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {/* Summary */}
+                                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center h-64 hover:shadow-lg transition duration-200">
+                                        <h2 className="text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Summary</h2>
+                                        <div className="space-y-4 w-full px-4">
+                                            <div className="flex items-center justify-between py-2 border-b border-[#f5c6cf]/30">
+                                                <span className="text-[#90636b] font-bold text-xs uppercase truncate mr-2">Applications</span>
+                                                <span className="text-2xl font-black text-[#90636b]">{data.allApplications?.length || 0}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between py-2 border-b border-[#f5c6cf]/30">
+                                                <span className="text-[#423292] font-bold text-xs uppercase truncate mr-2">Documents</span>
+                                                <span className="text-2xl font-black text-[#423292]">{counts.documents}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between py-2">
+                                                <span className="text-[#1a8377] font-bold text-xs uppercase truncate mr-2">Companies</span>
+                                                <span className="text-2xl font-black text-[#1a8377]">{counts.companies}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Types */}
+                                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center h-64 hover:shadow-lg transition duration-200">
+                                        <h2 className="text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Types</h2>
+                                        <div className="flex-grow w-full min-h-0">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <PieChart>
+                                                    <Pie
+                                                        data={typeData}
+                                                        innerRadius="50%"
+                                                        outerRadius="80%"
+                                                        paddingAngle={5}
+                                                        dataKey="value"
+                                                    >
+                                                        {typeData.map((entry, index) => (
+                                                            <Cell key={`cell-${index}`} fill={getTypeColor(entry.name)} />
+                                                        ))}
+                                                    </Pie>
+                                                    <Tooltip contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf' }} />
+                                                    <Legend wrapperStyle={{ fontSize: '10px' }} />
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+                                    {/* Statuses */}
+                                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center h-64 hover:shadow-lg transition duration-200">
+                                        <h2 className="text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Success</h2>
+                                        <div className="flex-grow w-full min-h-0">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <PieChart>
+                                                    <Pie
+                                                        data={statusData}
+                                                        innerRadius="50%"
+                                                        outerRadius="80%"
+                                                        paddingAngle={5}
+                                                        dataKey="value"
+                                                    >
+                                                        {statusData.map((entry, index) => (
+                                                            <Cell key={`cell-${index}`} fill={entry.color} />
+                                                        ))}
+                                                    </Pie>
+                                                    <Tooltip contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf' }} />
+                                                    <Legend wrapperStyle={{ fontSize: '10px' }} />
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+                                    {/* Countries */}
+                                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center h-64 hover:shadow-lg transition duration-200">
+                                        <h2 className="text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Countries</h2>
+                                        <div className="flex-grow w-full min-h-0">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <BarChart
+                                                    layout="vertical"
+                                                    data={countryPyramidData}
+                                                    margin={{ left: 0, right: 0, bottom: 0 }}
+                                                    stackOffset="sign"
+                                                    barSize={12}
+                                                >
+                                                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
+                                                    <XAxis type="number" hide />
+                                                    <YAxis dataKey="code" type="category" hide />
+                                                    <Tooltip
+                                                        cursor={{ fill: '#f9fafb' }}
+                                                        contentStyle={{ borderRadius: '6px', border: '1px solid #f5c6cf' }}
+                                                        formatter={(value, name) => [Math.abs(value), name]}
+                                                    />
+                                                    <Legend
+                                                        verticalAlign="top"
+                                                        height={24}
+                                                        wrapperStyle={{ fontSize: '10px' }}
+                                                        payload={[
+                                                            { value: 'Edu', type: 'rect', color: '#854d0e' },
+                                                            { value: 'Jobs', type: 'rect', color: '#646cff' }
+                                                        ]}
+                                                    />
+                                                    <Bar dataKey="eduVal" name="Education" fill="#854d0e" stackId="stack" radius={[2, 0, 0, 2]} />
+                                                    <Bar dataKey="gapPos" stackId="stack" fill="transparent" isAnimationActive={false}>
+                                                        <LabelList
+                                                            dataKey="code"
+                                                            position="center"
+                                                            style={{ fill: '#4b5563', fontSize: 10, fontWeight: 'bold' }}
+                                                        />
+                                                    </Bar>
+                                                    <Bar dataKey="gapPos" stackId="stack" fill="transparent" isAnimationActive={false} />
+                                                    <Bar dataKey="jobVal" name="Jobs" fill="#646cff" stackId="stack" radius={[0, 2, 2, 0]} />
+                                                </BarChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* RIGHT COLUMN (1/3): Alerts (Drafts & Pending) */}
+                            <div className="lg:col-span-1 space-y-4">
+                                
+                                {/* Critical Drafts - Error Style */}
+                                {criticalDrafts.map(app => (
+                                    <div key={app.id} className="bg-red-50 border-l-4 border-red-500 p-4 shadow-md rounded-r-md flex flex-col gap-2 relative group hover:shadow-lg transition-all">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <FaExclamationTriangle className="text-red-500" />
+                                                <span className="font-bold text-red-800 uppercase text-xs tracking-wider">Submission deadline soon</span>
+                                            </div>
+                                            <span className="text-xs font-semibold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">
+                                                Draft
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-gray-800">{app.title}</h3>
+                                            <p className="text-sm text-gray-600">{app.company?.name}</p>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-2">
+                                            <span className="text-xs font-bold text-red-700">
+                                                Deadline: {new Date(app.submitDeadline).toLocaleDateString()}
+                                            </span>
+                                            <button 
+                                                onClick={() => navigate(`/applications/${app.id}/edit`)} 
+                                                className="text-xs bg-red-100 hover:bg-red-200 text-red-700 font-bold px-3 py-1 rounded transition-colors"
+                                            >
+                                                Apply Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Critical Pending - Warning Style */}
+                                {criticalPending.map(app => (
+                                    <div key={app.id} className="bg-yellow-50 border-l-4 border-yellow-500 p-4 shadow-md rounded-r-md flex flex-col gap-2 relative group hover:shadow-lg transition-all">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <FaExclamationTriangle className="text-yellow-500" />
+                                                <span className="font-bold text-yellow-800 uppercase text-xs tracking-wider">Response Overdue</span>
+                                            </div>
+                                            <span className="text-xs font-semibold text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full">
+                                                Pending
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-gray-800">{app.title}</h3>
+                                            <p className="text-sm text-gray-600">{app.company?.name}</p>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-2">
+                                            <span className="text-xs font-bold text-yellow-700">
+                                                Deadline: {new Date(app.responseDeadline).toLocaleDateString()}
+                                            </span>
+                                            <button 
+                                                onClick={() => navigate(`/applications/${app.id}`)} 
+                                                className="text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-bold px-3 py-1 rounded transition-colors"
+                                            >
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {criticalDrafts.length === 0 && criticalPending.length === 0 && (
+                                    <div className="p-6 text-center text-gray-500 bg-white/50 rounded-md border border-dashed border-gray-300">
+                                        <p className="italic">No critical alerts at this time. Great job!</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
