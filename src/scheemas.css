@@ -1,0 +1,83 @@
+/* 
+  Project Color Schema
+  This file contains all unique colors used throughout the project, 
+  including both custom hex codes and Tailwind CSS colors.
+*/
+
+:root {
+  /* Brand & Theme Primary Colors */
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+  --color-indigo-800: #3730a3;
+  --color-indigo-900: #312e81;
+
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #6336b2;
+
+  /* Status Colors */
+  --color-success-emerald-50: #ecfdf5;
+  --color-success-emerald-500: #10b981;
+  --color-success-emerald-700: #047857;
+  --color-success-emerald-900: #064e3b;
+  
+  --color-success-green-100: #dcfce7;
+  --color-success-green-600: #16a34a;
+  --color-success-green-700: #15803d;
+  --color-success-green-800: #166534;
+
+  --color-warning-amber-50: #fffbeb;
+  --color-warning-amber-500: #f59e0b;
+  --color-warning-amber-700: #b45309;
+  --color-warning-amber-900: #78350f;
+
+  --color-warning-yellow-100: #fef9c3;
+  --color-warning-yellow-600: #ca8a04;
+  --color-warning-yellow-800: #854d0e;
+
+  --color-danger-red-50: #fef2f2;
+  --color-danger-red-100: #fee2e2;
+  --color-danger-red-200: #fecaca;
+  --color-danger-red-500: #ef4444;
+  --color-danger-red-600: #dc2626;
+  --color-danger-red-700: #b91c1c;
+  --color-danger-red-800: #991b1b;
+
+  /* Neutral & Layout Colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Specialized Chart & App Specific Colors */
+  --color-chart-pink-500: #ec4899;
+  --color-chart-pink-900: #91486c;
+  --color-chart-blue-100: #dbeafe;
+  --color-chart-blue-600: #2563eb;
+  --color-chart-blue-800: #1e40af;
+  --color-chart-purple-100: #f3e8ff;
+  --color-chart-purple-800: #6b21a8;
+
+  /* Custom Hex Codes from CSS files */
+  --color-custom-react-blue: #61dafb;
+  --color-custom-logo-green: #1a8377;
+  --color-custom-logo-light-green: #7ea7a2;
+  --color-custom-logo-pink: #90636b;
+  --color-custom-logo-light-pink: #f5c6cf;
+  --color-custom-logo-purple: #423292;
+  --color-custom-logo-light-purple: #423292;
+  --color-custom-vite-purple: #646cff;
+  --color-custom-muted-text: #888888;
+}

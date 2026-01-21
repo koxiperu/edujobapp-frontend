@@ -22,22 +22,23 @@ const LoginPage = () => {
                 navigate('/dashboard');
             }
         } catch (err) {
-            setError('Invalid username or password');
+            setError('Invalid username or password',err);
         }
     };
 
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-[60vh] flex items-center justify-center">
+        <div id="form" className="min-h-screen flex items-center justify-center">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full flex items-center justify-center">
             <div
-                className="w-full rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden flex flex-col items-center"
+                className="w-full rounded-md p-8 md:p-12 shadow-2xl relative overflow-hidden flex flex-col items-center"
                 style={{
-                    backgroundImage: 'url(/backgrounds/profile-bg.jpg)',
+                    backgroundImage: 'url(/backgrounds/form-bg.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
             >
                 {/* Soft pastel overlay - matching homepage */}
-                <div className="absolute inset-0 bg-white/85 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
 
                 <div className="relative z-10 w-full max-w-md">
                     <div className="text-center mb-10">
@@ -57,7 +58,7 @@ const LoginPage = () => {
                                     name="username"
                                     type="text"
                                     required
-                                    className="block w-full px-4 py-3 rounded-xl border-2 border-purple-100 bg-white/50 text-purple-900 placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                    className="block w-full px-4 py-3 rounded-md border-2 border-[#f5c6cf] bg-white/50 text-purple-900 placeholder-[#90636b] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                                     placeholder="your_username"
                                     value={credentials.username}
                                     onChange={handleChange}
@@ -70,7 +71,7 @@ const LoginPage = () => {
                                     name="password"
                                     type="password"
                                     required
-                                    className="block w-full px-4 py-3 rounded-xl border-2 border-purple-100 bg-white/50 text-purple-900 placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                    className="block w-full px-4 py-3 rounded-md border-2 border-[#f5c6cf] bg-white/50 text-purple-900 placeholder-[#90636b] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                                     placeholder="••••••••"
                                     value={credentials.password}
                                     onChange={handleChange}
@@ -79,7 +80,7 @@ const LoginPage = () => {
                         </div>
 
                         {error && (
-                            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
+                            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
                                 <div className="flex">
                                     <div className="flex-shrink-0">
                                         <span className="text-red-500">⚠️</span>
@@ -94,7 +95,7 @@ const LoginPage = () => {
                         <div>
                             <button
                                 type="submit"
-                                className="w-full bg-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-purple-700 hover:shadow-2xl transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                                className="w-full bg-[#423292] text-white px-8 py-4 rounded-md font-bold text-lg shadow-xl hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                             >
                                 Sign In
                             </button>
@@ -109,6 +110,7 @@ const LoginPage = () => {
                 </div>
             </div>
         </div>
+    </div>
     );
 };
 
