@@ -261,8 +261,8 @@ const CompaniesPage = () => {
 
                                 <div>
                                     <div className="flex items-center mb-3 pr-28">
-                                        <FaBuilding className="w-8 h-8 text-[#1a8377] mr-3 flex-shrink-0" />
-                                        <h3 className="text-lg font-bold text-[#1a8377] truncate" title={company.name}>{company.name}</h3>
+                                        <FaBuilding className="w-8 h-8 text-[#312e81] mr-3 flex-shrink-0" />
+                                        <h3 className="text-lg font-bold text-[#312e81] truncate" title={company.name}>{company.name}</h3>
                                     </div>
                                     <div className="space-y-2 mb-2">
                                         <div className="flex items-center space-x-2">

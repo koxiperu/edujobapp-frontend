@@ -254,8 +254,8 @@ const DocumentsPage = () => {
 
                                 <div>
                                     <div className="flex items-center mb-3 pr-28">
-                                        <svg className="w-8 h-8 text-[#1a8377] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                        <h3 className="text-lg font-bold text-[#1a8377] truncate" title={doc.fileName}>{doc.fileName}</h3>
+                                        <svg className="w-8 h-8 text-[#312e81] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                        <h3 className="text-lg font-bold text-[#312e81] truncate" title={doc.fileName}>{doc.fileName}</h3>
                                     </div>
                                     <div className="flex items-center space-x-2 mb-2">
                                         <span className={`text-xs px-2 py-1 rounded-full font-bold 
