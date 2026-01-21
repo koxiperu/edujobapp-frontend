@@ -25,27 +25,37 @@ src/
 ├── assets/          # Static assets (images like logos)
 ├── components/      # Reusable UI components
 │   ├── JobCard.jsx        # Displays individual job advertisement details
-│   ├── NavBar.jsx         # Main navigation bar
+│   ├── Header.jsx         # Main navigation bar with Auth logic
+│   ├── Footer.jsx         # Reusable footer
+│   ├── Layout.jsx         # Main page wrapper
 │   └── ProtectedRoute.jsx # Wrapper for route protection (Role-based)
 ├── contexts/        # Global state contexts
 │   └── AuthContext.jsx    # Manages authentication state (user, token)
 ├── hooks/           # Custom React hooks
 │   └── useAuth.jsx        # Hook to consume AuthContext
 ├── pages/           # Main page views
-│   ├── HomePage.jsx          # Landing page displaying public job ads
+│   ├── applications/      # Application management pages
+│   │   ├── ApplicationsPage.jsx
+│   │   ├── CreateApplicationPage.jsx
+│   │   ├── ApplicationDetailsPage.jsx
+│   │   └── EditApplicationPage.jsx
+│   ├── companies/         # Company management pages
+│   │   ├── CompaniesPage.jsx
+│   │   ├── CompanyDetailsPage.jsx
+│   │   └── EditCompanyPage.jsx
+│   ├── documents/         # Document management pages
+│   │   ├── DocumentsPage.jsx
+│   │   ├── DocumentDetailsPage.jsx
+│   │   └── EditDocumentPage.jsx
+│   ├── users/             # User and Profile pages
+│   │   ├── UsersManagementPage.jsx
+│   │   ├── EditUserPage.jsx
+│   │   ├── ProfilePage.jsx
+│   │   └── EditProfilePage.jsx
+│   ├── HomePage.jsx       # Landing page displaying public job ads
 │   ├── LoginPage.jsx
 │   ├── RegisterPage.jsx
-│   ├── DashboardPage.jsx     # User dashboard with stats
-│   ├── ApplicationsPage.jsx  # List and manage applications
-│   ├── CreateApplicationPage.jsx # Form to create new application
-│   ├── CompaniesPage.jsx     # Manage companies list
-│   ├── CompanyDetailsPage.jsx # View single company and its applications
-│   ├── EditCompanyPage.jsx   # Form to edit company details
-│   ├── DocumentsPage.jsx     # Manage documents
-│   ├── UsersManagementPage.jsx # Admin user management list
-│   ├── EditUserPage.jsx      # Admin form to edit user details
-│   ├── ProfilePage.jsx       # Read-only user profile view
-│   └── EditProfilePage.jsx   # Form to edit own profile
+│   └── DashboardPage.jsx  # User dashboard with stats
 └── services/        # External service integration
     └── api.js             # API wrapper methods for Auth, Jobs, Applications, etc.
 ```
@@ -63,8 +73,8 @@ src/
 ### Application Management
 *   **Public View:** The Home page fetches and displays public job advertisements (`/api/public/jobs`).
 *   **User Actions:**
-    *   **Dashboard:** View statistics (Total Applications, etc.).
-    *   **Applications:** CRUD operations for Job Applications.
+    *   **Dashboard:** View statistics, timeline, and urgent alerts.
+    *   **Applications:** CRUD operations for Job Applications. Includes document attachment.
     *   **Companies:** Full CRUD for Companies (List, Create, View Details, Edit, Delete).
     *   **Documents:** Upload and manage Resumes/CVs.
     *   **Profile:** View and update personal information (User profile).
@@ -89,8 +99,9 @@ The application communicates with a backend REST API.
 *   `npm run lint`: Runs ESLint.
 
 ## 7. Styles
-*   Tailwind CSS is configured and imported in `src/index.css`.
+*   Tailwind CSS 4 is configured and imported in `src/index.css`.
 *   Responsive design principles are applied using Tailwind's utility classes.
+*   Custom theme colors defined in `src/scheemas.css`.
 
 ## 8. Steps of development
 *   **Project Initialization**: Set up React with Vite.
@@ -101,39 +112,35 @@ The application communicates with a backend REST API.
 *   **Core Logic**: Restored and implemented `api.js` service, `AuthContext`, and `useAuth` hook.
 *   **Public Components**: Implemented Login, Register, Home pages and JobCard component.
 *   **Protected Pages**: Implemented Dashboard Page with summary stats and navigation links.
-*   **Applications Feature**: Implemented Applications List and Create Page with API integration.
+*   **Applications Feature**: Implemented Applications List and Create Page with API integration. Added document attachment via collapsible list.
 *   **Companies Feature**: Implemented Companies List, Details View, and Edit page. Fixed creation and update bugs by including `userId`.
 *   **Documents Feature**: Implemented Documents List, Upload, and Download (Blob) with API integration.
 *   **Routing**: Verified and configured `App.jsx` with Public and Protected routes using `Layout` and `AuthProvider`.
 *   **User Management (Admin)**: Implemented Users list, Delete functionality, and Edit User page (`EditUserPage`) with redirect.
 *   **Profile Management**: Implemented Profile view (`ProfilePage`) and Edit Profile form (`EditProfilePage`) for logged-in users.
-*   **Verification & Bug Fixes**:
-    *   **Fixed Missing Endpoint**: Added missing endpoints for users and companies to `src/services/api.js`.
-    *   **User Management Fixes**: Solved modal z-index issues by refactoring to a dedicated Edit page. Added sorting by username.
-    *   **API Fixes**: Handled `204 No Content` responses for updates and deletes.
-    *   **Layout Fixes**: Optimized `CompanyDetailsPage` layout and Quick Actions visibility.
+*   **Dashboard Refinement**: Reorganized layout into 2 columns. Added alert-style notifications for submission deadlines and overdue responses. Integrated "View" shortcuts in summary cards.
+*   **Directory Restructuring**: Refactored `src/pages` into feature-based subdirectories (`applications`, `companies`, `documents`, `users`) for better scalability.
+*   **Auth UX Fixes**: Updated Logout to redirect to the landing page (`/`).
 
 ## 9. TODO
-*   Refactor pages folder (organise into subfolders).
 *   Add to the list of companies filter by country.
 *   Change password for user.
-*   Color in red deadlines and notification on dashboard.
 
 ## 10. Dashboard
-The dashboard provides a visual overview of the user's activity and highlights urgent tasks. It consists of several key components:
+The dashboard provides a visual overview of the user's activity and highlights urgent tasks. It follows a 2-column layout:
 
-### Overview Grid (Layer 1)
-*   **Database Summary:** A square card showing the total count of applications, uploaded documents, and managed companies.
-*   **Jobs vs Education:** A pie chart illustrating the distribution between "JOB" and "EDUCATION" application types.
-*   **Success Rate:** A pie chart breaking down applications by status (Accepted, Rejected, and Others/Pending).
-*   **Country Distribution (Butterfly Chart):** A symmetric bar chart showing the number of Education applications (left) vs Job applications (right) per country. Countries are identified by 2-letter codes (e.g., LU, FR) and sorted in descending order by job application volume.
+### Left Column (Main Stats)
+*   **Layer 1: Timeline:** An Area Chart showing application creation trends over time (Jobs vs Education).
+*   **Layer 2: 2x2 Stats Grid:**
+    *   **Summary Box:** Totals for Applications, Documents, and Companies with quick "View" navigation buttons.
+    *   **Application Types:** Pie chart (Education vs Jobs).
+    *   **Success Rate:** Pie chart (Accepted, Rejected, Pending).
+    *   **Country Distribution:** Symmetric Bar Chart (Butterfly chart) showing regional activity.
 
-### Critical Attention Needed (Layer 2)
-*   **Drafts Expiring Soon:** A table listing applications in "DRAFT" status with a submission deadline within the next 7 days.
-*   **Overdue/Today Responses:** A table showing applications with "SUBMITTED" or "UNDER_REVIEW" statuses where the response deadline is today or has already passed.
-
-### Timeline (Layer 3)
-*   **Applications Creation Timeline:** A linear graph (line chart) showing the frequency of application creation over time, allowing users to track their productivity trends.
+### Right Column (Urgent Alerts)
+*   **Alert Cards:** Each urgent application appears as a card styled like an inline alert message.
+    *   **Submission Soon:** Red/Error-style alerts for drafts with deadlines within 7 days. Includes an "Apply Now" button redirecting to the edit form.
+    *   **Response Overdue:** Yellow/Warning-style alerts for submitted applications where the expected response date has passed.
 
 ### API Response Structure:
 ```json
