@@ -66,7 +66,7 @@ const UsersManagementPage = () => {
             <div
                 className="rounded-md p-6 md:p-10 shadow-2xl relative overflow-hidden"
                 style={{
-                    backgroundImage: 'url(/backgrounds/admin-bg.jpg)',
+                    backgroundImage: 'url(/backgrounds/form-bg.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
