@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import api from '../services/api';
-import { useAuth } from '../hooks/useAuth';
+import api from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 
 const CreateApplicationPage = () => {
     const navigate = useNavigate();

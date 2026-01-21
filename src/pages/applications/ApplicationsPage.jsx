@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api from '../../services/api';
 import { FaEye, FaEdit, FaTrash, FaBriefcase, FaGraduationCap, FaCalendarAlt, FaFilter, FaSort, FaTimes } from 'react-icons/fa';
 
 const ApplicationsPage = () => {
