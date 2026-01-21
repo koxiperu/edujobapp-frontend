@@ -120,7 +120,23 @@ The application communicates with a backend REST API.
 *   Color in red deadlines and notification on dashboard.
 
 ## 10. Dashboard
-Response from backend:
+The dashboard provides a visual overview of the user's activity and highlights urgent tasks. It consists of several key components:
+
+### Overview Grid (Layer 1)
+*   **Database Summary:** A square card showing the total count of applications, uploaded documents, and managed companies.
+*   **Jobs vs Education:** A pie chart illustrating the distribution between "JOB" and "EDUCATION" application types.
+*   **Success Rate:** A pie chart breaking down applications by status (Accepted, Rejected, and Others/Pending).
+*   **Country Distribution (Butterfly Chart):** A symmetric bar chart showing the number of Education applications (left) vs Job applications (right) per country. Countries are identified by 2-letter codes (e.g., LU, FR) and sorted in descending order by job application volume.
+
+### Critical Attention Needed (Layer 2)
+*   **Drafts Expiring Soon:** A table listing applications in "DRAFT" status with a submission deadline within the next 7 days.
+*   **Overdue/Today Responses:** A table showing applications with "SUBMITTED" or "UNDER_REVIEW" statuses where the response deadline is today or has already passed.
+
+### Timeline (Layer 3)
+*   **Applications Creation Timeline:** A linear graph (line chart) showing the frequency of application creation over time, allowing users to track their productivity trends.
+
+### API Response Structure:
+```json
 nDashboardResponse{
      totalApplications    integer($int64)
      totalDocuments    integer($int64)
@@ -145,6 +161,7 @@ nDashboardResponse{
           }
      }]
   }
+```
 
 # Project Context: EduJobApp - Backend API structure
 

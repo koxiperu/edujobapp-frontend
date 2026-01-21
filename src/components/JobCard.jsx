@@ -5,8 +5,8 @@ const JobCard = ({ job }) => {
         <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100 flex flex-col h-full">
             <div className="flex justify-between items-start mb-4">
                 <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-1 line-clamp-2">{job.title}</h3>
-                    <p className="text-gray-600 font-medium">{job.company_name}</p>
+                    <h3 className="text-xl font-bold text-[#423292] mb-1 line-clamp-2">{job.title}</h3>
+                    <p className="text-[#1a8377] font-medium">{job.company_name}</p>
                 </div>
                 <div className="flex flex-col items-end space-y-1">
                     <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap">
@@ -33,7 +33,7 @@ const JobCard = ({ job }) => {
                 ) : (
                     <div className="flex flex-wrap gap-1 mb-2">
                         {job.job_types && job.job_types.map(type => (
-                            <span key={type} className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded border border-gray-200">
+                            <span key={type} className="text-xs text-[#90636b] bg-gray-50 px-2 py-1 rounded border border-gray-200">
                                 {type}
                             </span>
                         ))}
@@ -43,7 +43,7 @@ const JobCard = ({ job }) => {
 
             <div className="flex flex-wrap gap-2 mb-4">
                 {job.tags && job.tags.map(tag => (
-                    <span key={tag} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                    <span key={tag} className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
                         {tag}
                     </span>
                 ))}
@@ -53,7 +53,7 @@ const JobCard = ({ job }) => {
                 href={job.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full text-center bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 mt-auto"
+                className="block w-full text-center bg-[#423292] hover:opacity-90 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:shadow-lg transition-all duration-200 mt-auto"
             >
                 Apply Now
             </a>
