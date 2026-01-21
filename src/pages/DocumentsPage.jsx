@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
+import { FaEye, FaDownload, FaTrash, FaInfoCircle } from 'react-icons/fa';
 
 const DocumentsPage = () => {
     const navigate = useNavigate();
@@ -9,7 +10,13 @@ const DocumentsPage = () => {
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [file, setFile] = useState(null);
+    const [newDocData, setNewDocData] = useState({
+        fileName: '',
+        docStatus: 'READY',
+        contentType: ''
+    });
     const [isCreating, setIsCreating] = useState(false);
+    const [notification, setNotification] = useState(null);
 
     useEffect(() => {
         fetchDocuments();
@@ -32,7 +39,15 @@ const DocumentsPage = () => {
     };
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+        if (selectedFile) {
+            setNewDocData(prev => ({ 
+                ...prev, 
+                fileName: selectedFile.name,
+                contentType: selectedFile.type || ''
+            }));
+        }
     };
 
     const handleUpload = async (e) => {
@@ -42,11 +57,16 @@ const DocumentsPage = () => {
         setUploading(true);
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('fileName', newDocData.fileName);
+        formData.append('docStatus', newDocData.docStatus);
+        if (newDocData.contentType) {
+            formData.append('contentType', newDocData.contentType);
+        }
 
         try {
             await api.documents.upload(formData);
             setFile(null);
-            document.getElementById('fileUpload').value = "";
+            setNewDocData({ fileName: '', docStatus: 'READY', contentType: '' });
             setIsCreating(false);
             fetchDocuments();
         } catch (error) {
@@ -84,106 +104,201 @@ const DocumentsPage = () => {
         }
     };
 
+    const showNotification = (message) => {
+        setNotification(message);
+        setTimeout(() => setNotification(null), 4000);
+    };
+
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-900">Documents</h1>
-                <button
-                    onClick={() => setIsCreating(!isCreating)}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 transition-colors"
-                >
-                    {isCreating ? 'Cancel' : 'Upload Document'}
-                </button>
-            </div>
-
-            {isCreating && (
-                <div className="bg-white p-6 rounded shadow mb-6 border border-indigo-100">
-                    <h2 className="text-xl font-bold mb-4">Upload New Document</h2>
-                    <form onSubmit={handleUpload} className="flex gap-4 items-end flex-wrap">
-                        <div className="flex-grow">
-                            <input
-                                id="fileUpload"
-                                type="file"
-                                onChange={handleFileChange}
-                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            disabled={!file || uploading}
-                            className={`px-6 py-2 rounded font-bold text-white shadow-sm transition-colors ${!file || uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
-                        >
-                            {uploading ? 'Uploading...' : 'Upload'}
-                        </button>
-                    </form>
+        <div id="list" className="min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div className="flex justify-between items-center mb-10">
+                    <div>
+                        <h1 className="text-4xl font-extrabold text-purple-900 drop-shadow-sm">Documents</h1>
+                        <div className="w-20 h-1 bg-gradient-to-r from-purple-900 to-pink-400 rounded-full mt-2"></div>
+                    </div>
+                    <button
+                        onClick={() => setIsCreating(!isCreating)}
+                        className="bg-[#6b21a8] text-white px-6 py-3 rounded-md font-bold shadow-md hover:opacity-90 transition-all"
+                    >
+                        {isCreating ? 'Cancel' : 'Upload Document'}
+                    </button>
                 </div>
-            )}
 
-            {loading ? (
-                <div className="text-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto"></div>
-                    <p className="mt-4 text-indigo-800">Loading documents...</p>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {documents.map((doc) => (
-                        <div key={doc.id} className="bg-white p-6 rounded shadow hover:shadow-lg transition duration-200 flex flex-col justify-between">
-                            <div>
-                                <div className="flex items-center mb-3">
-                                    <svg className="w-8 h-8 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                    <h3 className="text-lg font-bold text-gray-900 truncate" title={doc.fileName}>{doc.fileName}</h3>
-                                </div>
-                                <div className="flex items-center space-x-2 mb-2">
-                                    <span className={`text-xs px-2 py-1 rounded-full font-medium 
-                                        ${doc.docStatus === 'READY' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                        {doc.docStatus}
-                                    </span>
-                                    <span className="text-xs text-gray-400">•</span>
-                                    <span className="text-xs text-gray-500">{new Date(doc.uploadDate).toLocaleDateString()}</span>
-                                </div>
+                {isCreating && (
+                    <div
+                        className="rounded-md p-8 mb-12 shadow-2xl relative overflow-hidden flex flex-col items-center"
+                        style={{
+                            backgroundImage: 'url(/backgrounds/form-bg.jpg)',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                        }}
+                    >
+                        {/* Soft pastel overlay */}
+                        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+
+                        <div className="relative z-10 w-full max-w-2xl">
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl font-extrabold text-purple-900">Upload New Document</h2>
+                                <div className="w-16 h-1 bg-gradient-to-r from-purple-900 to-pink-400 mx-auto rounded-full mt-2"></div>
                             </div>
-                            
-                            <div className="mt-6 pt-4 border-t border-gray-100 flex flex-col">
-                                <div className="flex justify-between space-x-2">
+
+                            <form onSubmit={handleUpload} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-bold text-purple-900 mb-1 ml-1">Filename</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            className="block w-full px-4 py-3 rounded-md border-2 border-[#f5c6cf] bg-white/50 text-purple-900 placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                            value={newDocData.fileName}
+                                            onChange={(e) => setNewDocData({...newDocData, fileName: e.target.value})}
+                                            placeholder="Document name"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-purple-900 mb-1 ml-1">Status</label>
+                                        <select
+                                            className="block w-full px-4 py-3 rounded-md border-2 border-[#f5c6cf] bg-white/50 text-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all appearance-none"
+                                            value={newDocData.docStatus}
+                                            onChange={(e) => setNewDocData({...newDocData, docStatus: e.target.value})}
+                                        >
+                                            <option value="READY">Ready</option>
+                                            <option value="IN_PROGRESS">In Progress</option>
+                                            <option value="NEED_TO_UPDATE">Need to Update</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-bold text-purple-900 mb-1 ml-1">Content Type (Optional)</label>
+                                        <input
+                                            type="text"
+                                            className="block w-full px-4 py-3 rounded-md border-2 border-[#f5c6cf] bg-white/50 text-purple-900 placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                            value={newDocData.contentType}
+                                            onChange={(e) => setNewDocData({...newDocData, contentType: e.target.value})}
+                                            placeholder="e.g. application/pdf"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-bold text-purple-900 mb-2 ml-1">Select File</label>
+                                    <input
+                                        id="fileUpload"
+                                        type="file"
+                                        required
+                                        onChange={handleFileChange}
+                                        className="block w-full text-sm text-purple-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-bold file:bg-[#f5c6cf] file:text-[#90636b] hover:file:bg-[#f5c6cf]/80 cursor-pointer bg-white/30 rounded-md border-2 border-[#f5c6cf] p-1"
+                                    />
+                                </div>
+
+                                <div className="pt-4">
+                                    <button
+                                        type="submit"
+                                        disabled={!file || uploading}
+                                        className="w-full bg-[#6b21a8] text-white px-8 py-4 rounded-md font-bold text-lg shadow-xl hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {uploading ? 'Uploading...' : 'Confirm Upload'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {loading ? (
+                    <div className="text-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-900 mx-auto"></div>
+                        <p className="mt-4 text-purple-900 font-bold">Loading documents...</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {documents.map((doc) => (
+                            <div key={doc.id} className="bg-white/80 backdrop-blur-sm p-6 rounded-md shadow-md hover:shadow-lg transition duration-200 flex flex-col justify-between border border-[#f5c6cf] relative">
+                                {/* Top Right Action Buttons */}
+                                <div className="absolute top-4 right-4 flex space-x-2">
                                     <button
                                         onClick={() => navigate(`/documents/${doc.id}`)}
-                                        className="flex-1 bg-indigo-50 text-indigo-700 px-2 py-2 rounded text-sm font-bold hover:bg-indigo-100 transition-colors"
+                                        className="bg-[#646cff] text-white p-2 rounded-sm hover:opacity-90 transition-colors shadow-sm flex items-center justify-center"
+                                        title="View"
                                     >
-                                        View
+                                        <FaEye className="w-4 h-4" />
                                     </button>
                                     <button
                                         onClick={() => handleDownload(doc.id, doc.fileName)}
-                                        className="flex-1 bg-gray-50 text-gray-700 px-2 py-2 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
+                                        className="bg-[#423292] text-white p-2 rounded-sm hover:opacity-90 transition-colors shadow-sm flex items-center justify-center"
+                                        title="Download"
                                     >
-                                        Download
+                                        <FaDownload className="w-4 h-4" />
                                     </button>
                                     <button
-                                        onClick={() => handleDelete(doc.id)}
-                                        disabled={doc.applicationCount > 0}
-                                        className={`flex-1 px-2 py-2 rounded text-sm font-bold transition-colors border ${
+                                        onClick={() => {
+                                            if (doc.applicationCount > 0) {
+                                                showNotification(`* Used in ${doc.applicationCount} application(s). Delete applications first.`);
+                                            } else {
+                                                handleDelete(doc.id);
+                                            }
+                                        }}
+                                        className={`p-2 rounded-sm transition-colors shadow-sm flex items-center justify-center ${
                                             doc.applicationCount > 0 
-                                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' 
-                                            : 'bg-red-50 text-red-600 hover:bg-red-100 border-red-200'
+                                            ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed' 
+                                            : 'bg-[#91486c] text-white hover:opacity-90'
                                         }`}
-                                        title={doc.applicationCount > 0 ? "Cannot delete document used in applications" : ""}
+                                        title={doc.applicationCount > 0 ? "Cannot delete document used in applications" : "Delete"}
                                     >
-                                        Delete
+                                        <FaTrash className="w-4 h-4" />
                                     </button>
                                 </div>
-                                {doc.applicationCount > 0 && (
-                                    <p className="text-[10px] text-red-500 font-medium italic mt-2 text-center">
-                                        * Cannot delete: used in {doc.applicationCount} application(s)
+
+                                <div>
+                                    <div className="flex items-center mb-3 pr-28">
+                                        <svg className="w-8 h-8 text-[#1a8377] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                        <h3 className="text-lg font-bold text-[#1a8377] truncate" title={doc.fileName}>{doc.fileName}</h3>
+                                    </div>
+                                    <div className="flex items-center space-x-2 mb-2">
+                                        <span className={`text-xs px-2 py-1 rounded-full font-bold 
+                                            ${doc.docStatus === 'READY' ? 'bg-green-100 text-[#166534]' : 
+                                              doc.docStatus === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' : 
+                                              doc.docStatus === 'NEED_TO_UPDATE' ? 'bg-red-100 text-[#991b1b]' : 
+                                              'bg-yellow-100 text-yellow-800'}`}>
+                                            {doc.docStatus}
+                                        </span>
+                                        <span className="text-xs text-purple-900/40">•</span>
+                                        <span className="text-xs text-purple-900 font-medium">{new Date(doc.uploadDate).toLocaleDateString()}</span>
+                                    </div>
+                                    {doc.contentType && (
+                                        <div className="text-[10px] text-purple-900/60 font-mono mt-1 italic">
+                                            Type: {doc.contentType}
+                                        </div>
+                                    )}
+                                </div>
+                                
+                                <div className="mt-4 pt-4 border-t border-[#f5c6cf] flex flex-col">
+                                    <p className="text-[10px] text-purple-900/50 italic text-center">
+                                        {doc.applicationCount > 0 ? `Used in ${doc.applicationCount} application(s)` : 'Not used in any applications'}
                                     </p>
-                                )}
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                    {documents.length === 0 && (
-                        <div className="col-span-full text-center text-gray-500 py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                            <p className="text-lg font-medium">No documents found</p>
-                            <p className="text-sm mt-1">Upload a resume or cover letter to get started.</p>
-                        </div>
-                    )}
+                        ))}
+                        {documents.length === 0 && (
+                            <div className="col-span-full text-center text-purple-900 py-10 bg-white/40 backdrop-blur-sm rounded-md border-2 border-dashed border-[#f5c6cf]">
+                                <p className="text-lg font-bold">No documents found</p>
+                                <p className="text-sm mt-1">Upload a resume or cover letter to get started.</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+
+            {/* Floating Notification */}
+            {notification && (
+                <div className="fixed bottom-10 right-10 z-50 animate-bounce">
+                    <div className="bg-[#991b1b] text-white px-6 py-3 rounded-md shadow-2xl border-2 border-[#f5c6cf] flex items-center space-x-3">
+                        <FaInfoCircle />
+                        <span className="font-bold text-sm">{notification}</span>
+                    </div>
                 </div>
             )}
         </div>

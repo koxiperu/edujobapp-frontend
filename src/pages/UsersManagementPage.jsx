@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { FaExclamationTriangle } from 'react-icons/fa';
+import { FaExclamationTriangle, FaEdit, FaTrash } from 'react-icons/fa';
 
 const UsersManagementPage = () => {
     const navigate = useNavigate();
@@ -112,7 +112,7 @@ const UsersManagementPage = () => {
                             <div className="hidden md:block bg-white/80 backdrop-blur-sm shadow-xl rounded-none overflow-hidden border border-[#90636b]">
                                 <div className="overflow-x-auto">
                                     <table className="min-w-full divide-y divide-[#90636b]">
-                                        <thead className="bg-[#f5c6cf]/30">
+                                        <thead className="bg-[#90636b]/30">
                                             <tr>
                                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">User</th>
                                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-[#90636b] uppercase tracking-wider">Email</th>
@@ -152,22 +152,26 @@ const UsersManagementPage = () => {
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-900 font-medium">
                                                         {formatDate(u.birthDate)}
                                                     </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleEditUser(u.id)}
-                                                            className="bg-[#3730a3] text-white px-4 py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm"
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleDeleteUser(u.id)}
-                                                            className="bg-[#6b21a8] text-white px-4 py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                                                            disabled={u.username === 'admin'}
-                                                        >
-                                                            Delete
-                                                        </button>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <div className="flex justify-end space-x-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleEditUser(u.id)}
+                                                                className="bg-[#646cff] text-white p-2 rounded-sm hover:opacity-90 transition-colors shadow-sm flex items-center justify-center"
+                                                                title="Edit"
+                                                            >
+                                                                <FaEdit className="w-4 h-4" />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDeleteUser(u.id)}
+                                                                className="bg-[#6b21a8] text-white p-2 rounded-sm hover:opacity-90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                                                                disabled={u.username === 'admin'}
+                                                                title="Delete"
+                                                            >
+                                                                <FaTrash className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -214,17 +218,19 @@ const UsersManagementPage = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => handleEditUser(u.id)}
-                                                className="flex-1 bg-[#646cff] text-white py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm"
+                                                className="bg-[#646cff] text-white p-2 rounded-sm hover:opacity-90 transition-colors shadow-sm flex items-center justify-center"
+                                                title="Edit"
                                             >
-                                                Edit
+                                                <FaEdit className="w-4 h-4" />
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => handleDeleteUser(u.id)}
-                                                className="flex-1 bg-[#6b21a8] text-white py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                className="bg-[#6b21a8] text-white p-2 rounded-sm hover:opacity-90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                                 disabled={u.username === 'admin'}
+                                                title="Delete"
                                             >
-                                                Delete
+                                                <FaTrash className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </div>
