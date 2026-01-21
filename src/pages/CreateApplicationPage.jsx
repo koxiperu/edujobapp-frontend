@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import api from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 
@@ -7,7 +8,9 @@ const CreateApplicationPage = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const [companies, setCompanies] = useState([]);
+    const [allDocuments, setAllDocuments] = useState([]);
     const [loadingCompanies, setLoadingCompanies] = useState(true);
+    const [isDocumentsOpen, setIsDocumentsOpen] = useState(false);
 
     // Initial form state
     const [formData, setFormData] = useState({
@@ -18,25 +21,41 @@ const CreateApplicationPage = () => {
         submitDeadline: '',
         responseDeadline: '',
         appStatus: 'DRAFT',
+        documentIds: []
     });
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetchCompanies = async () => {
+        const fetchData = async () => {
             try {
-                const data = await api.companies.getAll();
-                setCompanies(data);
+                const [companiesData, docsData] = await Promise.all([
+                    api.companies.getAll(),
+                    api.documents.getAll()
+                ]);
+                setCompanies(companiesData);
+                setAllDocuments(docsData);
             } catch (err) {
-                console.error("Failed to load companies", err);
+                console.error("Failed to load data", err);
             } finally {
                 setLoadingCompanies(false);
             }
         };
-        fetchCompanies();
+        fetchData();
     }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleDocumentToggle = (docId) => {
+        setFormData(prev => {
+            const currentIds = prev.documentIds;
+            if (currentIds.includes(docId)) {
+                return { ...prev, documentIds: currentIds.filter(id => id !== docId) };
+            } else {
+                return { ...prev, documentIds: [...currentIds, docId] };
+            }
+        });
     };
 
     const handleSubmit = async (e) => {
@@ -177,6 +196,53 @@ const CreateApplicationPage = () => {
                                             onChange={handleChange}
                                         />
                                     </div>
+                                </div>
+
+                                {/* Unfolding Documents Section */}
+                                <div className="border-2 border-[#f5c6cf] rounded-md bg-white/50 overflow-hidden">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsDocumentsOpen(!isDocumentsOpen)}
+                                        className="w-full px-4 py-3 flex items-center justify-between text-purple-900 font-bold hover:bg-[#f5c6cf]/20 transition-colors"
+                                    >
+                                        <span>Attach Documents {formData.documentIds.length > 0 && `(${formData.documentIds.length})`}</span>
+                                        {isDocumentsOpen ? <FaChevronUp /> : <FaChevronDown />}
+                                    </button>
+                                    
+                                    {isDocumentsOpen && (
+                                        <div className="p-4 border-t border-[#f5c6cf] bg-white/30 max-h-60 overflow-y-auto">
+                                            {allDocuments.length > 0 ? (
+                                                <div className="space-y-2">
+                                                    {allDocuments.map(doc => (
+                                                        <label key={doc.id} className={`flex items-center p-2 rounded-md border transition-all cursor-pointer ${
+                                                            formData.documentIds.includes(doc.id) 
+                                                            ? 'bg-[#f5c6cf]/30 border-[#90636b] ring-1 ring-[#90636b]' 
+                                                            : 'border-transparent hover:bg-white/50'
+                                                        }`}>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={formData.documentIds.includes(doc.id)}
+                                                                onChange={() => handleDocumentToggle(doc.id)}
+                                                                className="w-4 h-4 text-[#423292] rounded focus:ring-[#423292] border-[#f5c6cf]"
+                                                            />
+                                                            <span className="ml-3 text-sm text-purple-900 truncate">{doc.fileName}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="text-center py-4">
+                                                    <p className="text-sm text-purple-800 italic mb-2">No documents available.</p>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigate('/documents', { state: { isCreating: true } })}
+                                                        className="text-xs bg-[#423292] text-white px-3 py-1.5 rounded-md font-bold hover:opacity-90"
+                                                    >
+                                                        Upload New
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
