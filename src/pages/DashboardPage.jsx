@@ -45,9 +45,9 @@ const DashboardPage = () => {
     const getTypeColor = (name) => {
         const n = name.toUpperCase();
         if (n.includes('JOB') || n.includes('EMPLOYER')) return '#646cff';
-        if (n.includes('COURSE')) return '#8b5cf6';
+        if (n.includes('COURSE')) return '#ca8a04';
         if (n.includes('UNIVERSITY')) return '#1a8377';
-        if (n.includes('LYCEE')) return '#ca8a04';
+        if (n.includes('LYCEE')) return '#8b5cf6';
         return '#6b7280';
     };
 
@@ -66,7 +66,7 @@ const DashboardPage = () => {
 
         return [
             { name: 'Accepted', value: accepted, color: '#1a8377' },
-            { name: 'Rejected', value: rejected, color: '#90636b' },
+            { name: 'Rejected', value: rejected, color: '#991b1b' },
             { name: 'Unknown', value: others, color: '#6b7280' }
         ];
     }, [data]);
@@ -189,8 +189,8 @@ const DashboardPage = () => {
                                                         <stop offset="95%" stopColor="#646cff" stopOpacity={0}/>
                                                     </linearGradient>
                                                     <linearGradient id="colorEdu" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="5%" stopColor="#854d0e" stopOpacity={0.8}/>
-                                                        <stop offset="95%" stopColor="#854d0e" stopOpacity={0}/>
+                                                        <stop offset="5%" stopColor="#1a8377" stopOpacity={0.8}/>
+                                                        <stop offset="95%" stopColor="#1a8377" stopOpacity={0}/>
                                                     </linearGradient>
                                                 </defs>
                                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
@@ -219,7 +219,7 @@ const DashboardPage = () => {
                                                     type="monotone" 
                                                     dataKey="edu" 
                                                     name="Education"
-                                                    stroke="#854d0e" 
+                                                    stroke="#1a8377" 
                                                     fillOpacity={1} 
                                                     fill="url(#colorEdu)" 
                                                 />
@@ -234,18 +234,42 @@ const DashboardPage = () => {
                                     {/* Summary */}
                                     <div className="bg-white/80 backdrop-blur-sm p-4 rounded-md shadow-md border border-[#f5c6cf] flex flex-col justify-center items-center h-64 hover:shadow-lg transition duration-200">
                                         <h2 className="text-sm font-bold text-purple-900 mb-2 uppercase tracking-wider">Summary</h2>
-                                        <div className="space-y-4 w-full px-4">
+                                        <div className="space-y-3 w-full px-4">
                                             <div className="flex items-center justify-between py-2 border-b border-[#f5c6cf]/30">
-                                                <span className="text-[#90636b] font-bold text-xs uppercase truncate mr-2">Applications</span>
-                                                <span className="text-2xl font-black text-[#90636b]">{data.allApplications?.length || 0}</span>
+                                                <span className="text-[#90636b] font-bold text-[10px] uppercase truncate mr-2">Applications</span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-lg font-black text-[#90636b]">{data.allApplications?.length || 0}</span>
+                                                    <button 
+                                                        onClick={() => navigate('/applications')} 
+                                                        className="text-[10px] bg-[#90636b]/10 hover:bg-[#90636b]/20 text-[#90636b] font-bold py-1 px-3 rounded transition-colors uppercase tracking-tight"
+                                                    >
+                                                        View
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div className="flex items-center justify-between py-2 border-b border-[#f5c6cf]/30">
-                                                <span className="text-[#423292] font-bold text-xs uppercase truncate mr-2">Documents</span>
-                                                <span className="text-2xl font-black text-[#423292]">{counts.documents}</span>
+                                                <span className="text-[#423292] font-bold text-[10px] uppercase truncate mr-2">Documents</span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-lg font-black text-[#423292]">{counts.documents}</span>
+                                                    <button 
+                                                        onClick={() => navigate('/documents')} 
+                                                        className="text-[10px] bg-[#423292]/10 hover:bg-[#423292]/20 text-[#423292] font-bold py-1 px-3 rounded transition-colors uppercase tracking-tight"
+                                                    >
+                                                        View
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div className="flex items-center justify-between py-2">
-                                                <span className="text-[#1a8377] font-bold text-xs uppercase truncate mr-2">Companies</span>
-                                                <span className="text-2xl font-black text-[#1a8377]">{counts.companies}</span>
+                                                <span className="text-[#1a8377] font-bold text-[10px] uppercase truncate mr-2">Companies</span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-lg font-black text-[#1a8377]">{counts.companies}</span>
+                                                    <button 
+                                                        onClick={() => navigate('/companies')} 
+                                                        className="text-[10px] bg-[#1a8377]/10 hover:bg-[#1a8377]/20 text-[#1a8377] font-bold py-1 px-3 rounded transition-colors uppercase tracking-tight"
+                                                    >
+                                                        View
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -323,11 +347,11 @@ const DashboardPage = () => {
                                                         height={24}
                                                         wrapperStyle={{ fontSize: '10px' }}
                                                         payload={[
-                                                            { value: 'Edu', type: 'rect', color: '#854d0e' },
+                                                            { value: 'Edu', type: 'rect', color: '#1a8377' },
                                                             { value: 'Jobs', type: 'rect', color: '#646cff' }
                                                         ]}
                                                     />
-                                                    <Bar dataKey="eduVal" name="Education" fill="#854d0e" stackId="stack" radius={[2, 0, 0, 2]} />
+                                                    <Bar dataKey="eduVal" name="Education" fill="#1a8377" stackId="stack" radius={[2, 0, 0, 2]} />
                                                     <Bar dataKey="gapPos" stackId="stack" fill="transparent" isAnimationActive={false}>
                                                         <LabelList
                                                             dataKey="code"
