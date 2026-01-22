@@ -1,0 +1,253 @@
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
+const getHeaders = () => {
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+    const token = sessionStorage.getItem('edujobapp_token');
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+};
+
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        if (response.status === 401) {
+            // Token expired or invalid
+            sessionStorage.removeItem('edujobapp_token');
+            sessionStorage.removeItem('edujobapp_user');
+            window.location.href = '/login';
+        }
+        const error = await response.text();
+        throw new Error(error || 'Something went wrong');
+    }
+    return response.json();
+};
+
+const api = {
+    auth: {
+        login: async (credentials) => {
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials),
+            });
+            return handleResponse(response);
+        },
+        register: async (userData) => {
+            const response = await fetch(`${API_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+            return handleResponse(response);
+        },
+        getMe: async () => {
+            const response = await fetch(`${API_URL}/users/me`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        }
+    },
+    dashboard: {
+        getStats: async () => {
+            const response = await fetch(`${API_URL}/dashboard`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        }
+    },
+    applications: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/applications/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        create: async (data) => {
+            const response = await fetch(`${API_URL}/applications`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/applications/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/applications/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
+        }
+    },
+    companies: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/companies`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getApplications: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        create: async (data) => {
+            const response = await fetch(`${API_URL}/companies`, {
+                method: 'POST',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/companies/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
+        }
+    },
+    documents: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/documents`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getApplications: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}/applications`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        upload: async (formData) => {
+            const token = sessionStorage.getItem('edujobapp_token');
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            // Do NOT set Content-Type, let browser set boundary
+            
+            const response = await fetch(`${API_URL}/documents/upload`, {
+                method: 'POST',
+                headers: headers,
+                body: formData,
+            });
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
+        },
+        download: async (id) => {
+            const response = await fetch(`${API_URL}/documents/${id}/download`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error("Download failed");
+            return response.blob();
+        }
+    },
+    jobs: {
+        getAll: async () => {
+            // Public endpoint, no authentication needed
+            const response = await fetch(`${API_URL}/public/jobs`);
+            return handleResponse(response);
+        }
+    },
+    users: {
+        getAll: async () => {
+            const response = await fetch(`${API_URL}/users`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        getById: async (id) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                headers: getHeaders(),
+            });
+            return handleResponse(response);
+        },
+        updateMe: async (data) => {
+            const response = await fetch(`${API_URL}/users/me`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data;
+            return handleResponse(response);
+        },
+        update: async (id, data) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (response.status === 204) return data; // Optimistic return or null
+            return handleResponse(response);
+        },
+        delete: async (id) => {
+            const response = await fetch(`${API_URL}/users/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (response.status === 204) return;
+            return handleResponse(response);
+        }
+    }
+};
+
+export default api;
