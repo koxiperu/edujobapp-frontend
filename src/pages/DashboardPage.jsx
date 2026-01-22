@@ -172,10 +172,10 @@ const DashboardPage = () => {
 
                     <div className="relative z-10 w-full">
                         
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             
-                            {/* LEFT COLUMN (2/3): Timeline + 4 Charts */}
-                            <div className="lg:col-span-2 space-y-6">
+                            {/* LEFT COLUMN (50%): Timeline + 4 Charts */}
+                            <div className="lg:col-span-1 space-y-6">
                                 
                                 {/* 1. Timeline Chart (Top Left) */}
                                 <div className="bg-white/80 backdrop-blur-sm p-6 rounded-md shadow-md border border-[#f5c6cf]">
@@ -368,12 +368,12 @@ const DashboardPage = () => {
                                 </div>
                             </div>
 
-                            {/* RIGHT COLUMN (1/3): Alerts (Drafts & Pending) */}
-                            <div className="lg:col-span-1 space-y-4">
+                            {/* RIGHT COLUMN (50%): Alerts (Drafts & Pending) */}
+                            <div className="lg:col-span-1 space-y-4 max-h-[850px] overflow-y-auto pr-2 custom-scrollbar">
                                 
                                 {/* Critical Drafts - Error Style */}
                                 {criticalDrafts.map(app => (
-                                    <div key={app.id} className="bg-red-50 border-l-4 border-red-500 p-4 shadow-md rounded-r-md flex flex-col gap-2 relative group hover:shadow-lg transition-all">
+                                    <div key={app.id} className="bg-red-50 border-l-4 border-red-500 p-3 shadow-md rounded-r-md flex flex-col gap-1 relative group hover:shadow-lg transition-all">
                                         <div className="flex items-start justify-between">
                                             <div className="flex items-center gap-2">
                                                 <FaExclamationTriangle className="text-red-500" />
@@ -384,10 +384,11 @@ const DashboardPage = () => {
                                             </span>
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-gray-800">{app.title}</h3>
-                                            <p className="text-sm text-gray-600">{app.company?.name}</p>
+                                            <h3 className="font-bold text-gray-800">
+                                                {app.title} <span className="text-gray-500 font-medium">({app.company?.name})</span>
+                                            </h3>
                                         </div>
-                                        <div className="flex items-center justify-between mt-2">
+                                        <div className="flex items-center justify-between mt-1">
                                             <span className="text-xs font-bold text-red-700">
                                                 Deadline: {new Date(app.submitDeadline).toLocaleDateString()}
                                             </span>
@@ -403,7 +404,7 @@ const DashboardPage = () => {
 
                                 {/* Critical Pending - Warning Style */}
                                 {criticalPending.map(app => (
-                                    <div key={app.id} className="bg-yellow-50 border-l-4 border-yellow-500 p-4 shadow-md rounded-r-md flex flex-col gap-2 relative group hover:shadow-lg transition-all">
+                                    <div key={app.id} className="bg-yellow-50 border-l-4 border-yellow-500 p-3 shadow-md rounded-r-md flex flex-col relative group hover:shadow-lg transition-all">
                                         <div className="flex items-start justify-between">
                                             <div className="flex items-center gap-2">
                                                 <FaExclamationTriangle className="text-yellow-500" />
@@ -414,10 +415,11 @@ const DashboardPage = () => {
                                             </span>
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-gray-800">{app.title}</h3>
-                                            <p className="text-sm text-gray-600">{app.company?.name}</p>
+                                            <h3 className="font-bold text-gray-800">
+                                                {app.title} <span className="text-gray-500 font-medium">({app.company?.name})</span>
+                                            </h3>
                                         </div>
-                                        <div className="flex items-center justify-between mt-2">
+                                        <div className="flex items-center justify-between mt-1">
                                             <span className="text-xs font-bold text-yellow-700">
                                                 Deadline: {new Date(app.responseDeadline).toLocaleDateString()}
                                             </span>

@@ -67,9 +67,9 @@ const ApplicationsPage = () => {
         .sort((a, b) => {
             switch (sortBy) {
                 case 'DATE_NEWEST':
-                    return new Date(b.creationDate) - new Date(a.creationDate);
+                    return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
                 case 'DATE_OLDEST':
-                    return new Date(a.creationDate) - new Date(b.creationDate);
+                    return new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime();
                 case 'COMPANY_ASC':
                     return (a.company?.name || '').localeCompare(b.company?.name || '');
                 case 'COMPANY_DESC':

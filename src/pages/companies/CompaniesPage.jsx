@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
-import { FaEye, FaEdit, FaTrash, FaBuilding, FaMapMarkerAlt, FaGlobe, FaEnvelope, FaInfoCircle } from 'react-icons/fa';
+import { FaEye, FaEdit, FaTrash, FaIndustry, FaMapMarkerAlt, FaGlobe, FaEnvelope, FaInfoCircle } from 'react-icons/fa';
 
 const CompaniesPage = () => {
     const navigate = useNavigate();
@@ -28,7 +28,10 @@ const CompaniesPage = () => {
     const fetchCompanies = async () => {
         try {
             const data = await api.companies.getAll();
-            setCompanies(data);
+            const sortedData = [...data].sort((a, b) => 
+                a.name.localeCompare(b.name)
+            );
+            setCompanies(sortedData);
         } catch (error) {
             console.error("Failed to load companies", error);
         } finally {
@@ -261,7 +264,7 @@ const CompaniesPage = () => {
 
                                 <div>
                                     <div className="flex items-center mb-3 pr-28">
-                                        <FaBuilding className="w-8 h-8 text-[#312e81] mr-3 flex-shrink-0" />
+                                        <FaIndustry className="w-8 h-8 text-[#312e81] mr-3 flex-shrink-0" />
                                         <h3 className="text-lg font-bold text-[#312e81] truncate" title={company.name}>{company.name}</h3>
                                     </div>
                                     <div className="space-y-2 mb-2">

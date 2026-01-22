@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaInfoCircle } from 'react-icons/fa';
 import api from '../../services/api';
 
 const ProfilePage = () => {
@@ -7,6 +8,7 @@ const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [notification, setNotification] = useState(null);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -23,6 +25,11 @@ const ProfilePage = () => {
 
         fetchProfile();
     }, []);
+
+    const showNotification = (message) => {
+        setNotification(message);
+        setTimeout(() => setNotification(null), 4000);
+    };
 
     const formatDate = (dateString) => {
         if (!dateString) return '-';
@@ -80,19 +87,27 @@ const ProfilePage = () => {
                     <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
 
                     <div className="relative z-10 w-full max-w-3xl">
-                        <div className="flex flex-col md:flex-row justify-between items-center mb-10 text-center md:text-left">
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-10 text-center md:text-left gap-4">
                             <div>
                                 <h1 className="text-4xl font-extrabold tracking-tight text-purple-900 drop-shadow-sm">
                                     My Profile
                                 </h1>
                                 <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-2 mx-auto md:mx-0"></div>
                             </div>
-                            <button
-                                onClick={() => navigate('/profile/edit')}
-                                className="bg-[#423292] text-white px-4 py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm"
-                            >
-                                Edit Profile
-                            </button>
+                            <div className="flex space-x-3">
+                                <button
+                                    onClick={() => showNotification("This function is not working yet")}
+                                    className="bg-[#1a8377] text-white px-4 py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm"
+                                >
+                                    Change Credentials
+                                </button>
+                                <button
+                                    onClick={() => navigate('/profile/edit')}
+                                    className="bg-[#423292] text-white px-4 py-2 rounded-md hover:opacity-90 font-medium transition-colors shadow-sm"
+                                >
+                                    Edit Profile
+                                </button>
+                            </div>
                         </div>
 
                         <div className="bg-white/60 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 p-8">
@@ -143,6 +158,16 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Floating Notification */}
+            {notification && (
+                <div className="fixed bottom-10 right-10 z-50 animate-bounce">
+                    <div className="bg-[#1a8377] text-white px-6 py-3 rounded-md shadow-2xl border-2 border-white/20 flex items-center space-x-3 backdrop-blur-md">
+                        <FaInfoCircle />
+                        <span className="font-bold text-sm">{notification}</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

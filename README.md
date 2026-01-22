@@ -2,13 +2,13 @@
 
 This is the frontend repository for **EduJobApp**, a comprehensive job application tracking system designed to help users manage their job search, applications, and professional documents. It is built as a Single Page Application (SPA) using React.
 
-## ⚠️ Important: Backend Requirement
+## Important: Backend Requirement
 
 This frontend application requires a running instance of the **EduJobApp Backend** (Java Spring Boot) to function correctly. The frontend communicates with the backend via a REST API.
 
 Please refer to the `README.md` in the backend project repository for instructions on how to install, configure, and run the server. Ensure the backend is running (typically on `http://localhost:8080`) before starting the frontend.
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these instructions to set up and run the frontend project on your local machine.
 
@@ -65,7 +65,7 @@ The build artifacts will be generated in the `dist/` directory. You can preview 
 npm run preview
 ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 *   **Framework:** React 19
 *   **Build Tool:** Vite 7
@@ -75,7 +75,7 @@ npm run preview
 *   **Icons:** React Icons
 *   **HTTP Client:** Native Fetch API
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 src/
@@ -92,7 +92,7 @@ src/
 └── services/        # API integration services
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1.  Fork the project.
 2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../services/api';
-import { FaEye, FaDownload, FaTrash, FaInfoCircle } from 'react-icons/fa';
+import { FaEye, FaDownload, FaTrash, FaInfoCircle, FaFileAlt } from 'react-icons/fa';
 
 const DocumentsPage = () => {
     const navigate = useNavigate();
@@ -30,7 +30,21 @@ const DocumentsPage = () => {
     const fetchDocuments = async () => {
         try {
             const data = await api.documents.getAll();
-            setDocuments(data);
+            
+            // Sort by status: NEED_TO_UPDATE -> IN_PROGRESS -> READY
+            const statusOrder = {
+                'NEED_TO_UPDATE': 1,
+                'IN_PROGRESS': 2,
+                'READY': 3
+            };
+
+            const sortedData = [...data].sort((a, b) => {
+                const orderA = statusOrder[a.docStatus] || 4;
+                const orderB = statusOrder[b.docStatus] || 4;
+                return orderA - orderB;
+            });
+
+            setDocuments(sortedData);
         } catch (error) {
             console.error("Failed to load documents", error);
         } finally {
@@ -254,7 +268,7 @@ const DocumentsPage = () => {
 
                                 <div>
                                     <div className="flex items-center mb-3 pr-28">
-                                        <svg className="w-8 h-8 text-[#312e81] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                        <FaFileAlt className="w-8 h-8 text-[#312e81] mr-3 flex-shrink-0" />
                                         <h3 className="text-lg font-bold text-[#312e81] truncate" title={doc.fileName}>{doc.fileName}</h3>
                                     </div>
                                     <div className="flex items-center space-x-2 mb-2">
